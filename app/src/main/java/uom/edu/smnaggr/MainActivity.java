@@ -4,6 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterFactory;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -12,5 +16,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         System.out.println("GIASOU SELINIIII ");
+
+        Twitter twitter = TwitterFactory.getSingleton();
+        //Status status = twitter.updateStatus();
+        System.out.println("Successfully updated the status to [" + status.getText() + "].");
+
     }
 }
