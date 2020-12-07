@@ -15,7 +15,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        System.out.println("GIASOU SELINIIII ");
 
         Twitter twitter = TwitterFactory.getSingleton();
         //Status status = twitter.updateStatus();
