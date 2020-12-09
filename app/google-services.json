@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "107367225609",
+    "project_id": "smnagrr",
+    "storage_bucket": "smnagrr.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:107367225609:android:440317abf53c7143c21bd8",
+        "android_client_info": {
+          "package_name": "uom.edu.smnaggr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "107367225609-p4hkc1pmiiejdi1kq8co9c8k5f3ohbdl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "uom.edu.smnaggr",
+            "certificate_hash": "9ccdad5fa8d535677d51a528e5ed49f2b2ad4a24"
+          }
+        },
+        {
+          "client_id": "107367225609-kt8bgofahrfgc0dconten4plncliag2m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgDI_-wfz-hiRV2ELsXTO8zONuI8xaWzs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "107367225609-kt8bgofahrfgc0dconten4plncliag2m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
