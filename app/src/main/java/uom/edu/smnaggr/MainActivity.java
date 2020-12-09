@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         else{
             mTwitterBtn.setVisibility(View.GONE);
         }
-    }
+    } 
 
     private void signInToFirebaseWithTwitterSession(TwitterSession session){
         AuthCredential credential = TwitterAuthProvider.getCredential(session.getAuthToken().token,
