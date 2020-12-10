@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">SMNAggr</string>
     <string name="twitter_consumer_key" translatable="false"> x </string>
-    <string name="twitter_consumer_secret" translatable="false"> x
- </string>
+    <string name="twitter_consumer_secret" translatable="false"> x </string>
 </resources>
