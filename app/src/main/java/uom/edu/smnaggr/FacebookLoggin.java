@@ -18,6 +18,10 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
+import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,13 +31,16 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 import com.squareup.picasso.Picasso;
+
+import uom.edu.smnaggr.databinding.ActivityFacebookLogginBinding;
 
 public class FacebookLoggin extends AppCompatActivity {
 
 
     private CallbackManager callBack;
-    private FirebaseAuth auth;
+    private FirebaseAuth mAuth;
     private TextView userName;
     private ImageView profilePic;
     private LoginButton fbLogin;
@@ -43,6 +50,8 @@ public class FacebookLoggin extends AppCompatActivity {
     private static final String TAG = "FacebookAuthentication";
     private Uri photoUrl;
     private String photoUrlstr;
+    private String facebookUserId = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,31 +59,17 @@ public class FacebookLoggin extends AppCompatActivity {
         Intent intent = getIntent();
         String value = intent.getStringExtra("key"); //if it's a string you stored.
 
-        // OAuthProvider.Builder provider = OAuthProvider.newBuilder("twitter.com");
-
-/*
-        //This code must be entering before the setContentView to make the twitter login work...
-        TwitterAuthConfig mTwitterAuthConfig = new TwitterAuthConfig(getString(R.string.twitter_consumer_key),
-                getString(R.string.twitter_consumer_secret));
-        TwitterConfig twitterConfig = new TwitterConfig.Builder(this)
-                .twitterAuthConfig(mTwitterAuthConfig)
-                .build();
-        Twitter.initialize(twitterConfig);
-*/
         setContentView(R.layout.activity_facebook_loggin);
-        //meta to setContentView bazw to firebase gia to facebook
-        //
-        //
-        // FacebookSdk.sdkInitialize(getApplicationContext());
-        // AppEventsLogger.activateApp(this);
-        auth = FirebaseAuth.getInstance();
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        mAuth = FirebaseAuth.getInstance();
         FacebookSdk.getApplicationContext();
         //antistoixizw me layout.xml kai koympwnw to koympi
+
         Url = findViewById(R.id.urlText);
         userName = findViewById(R.id.nameText);
         profilePic = findViewById(R.id.profileView);
         fbLogin = findViewById(R.id.login_button);
-        fbLogin.setReadPermissions("email", "public_profile","user_friends","user_birthday");
+        fbLogin.setReadPermissions("email", "public_profile");
         //
         callBack = CallbackManager.Factory.create();
 
@@ -82,6 +77,7 @@ public class FacebookLoggin extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "onSuccess" + loginResult);
+                Toast.makeText(FacebookLoggin.this, "Signed in to facebook successful", Toast.LENGTH_LONG).show();
                 handleFacebookToken(loginResult.getAccessToken());
             }
 
@@ -94,7 +90,7 @@ public class FacebookLoggin extends AppCompatActivity {
             @Override
             public void onError(FacebookException error) {
                 Log.d(TAG, "onError" + error );
-
+                Toast.makeText(FacebookLoggin.this, "Signed in to facebook failed", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -103,10 +99,10 @@ public class FacebookLoggin extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if(user != null){
-                    UpdateUI(user);
+                    UpdateUI2(user);
                 }
                 else{
-                    UpdateUI(null);
+                    UpdateUI2(null);
                 }
             }
         };
@@ -114,7 +110,7 @@ public class FacebookLoggin extends AppCompatActivity {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
                 if(currentAccessToken == null){
-                    auth.signOut();
+                    mAuth.signOut();
                 }
             }
         };
@@ -123,19 +119,20 @@ public class FacebookLoggin extends AppCompatActivity {
     private void handleFacebookToken(AccessToken token){
         Log.d(TAG , "HandleFacebookToken" + token);
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-        auth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    Log.d(TAG, "Sign in with credential: Successful" );
-                    FirebaseUser user = auth.getCurrentUser();
-                    UpdateUI(user);
+                Log.d(TAG, "Sign in with credential: Successful" );
+                Toast.makeText(FacebookLoggin.this, "Sign in with credential: Successful.", Toast.LENGTH_SHORT).show();
+                FirebaseUser user = mAuth.getCurrentUser();
+
+                UpdateUI2(user);
+
+                if (!task.isSuccessful()){
+                    Toast.makeText(FacebookLoggin.this, "Firebase Auth failed", Toast.LENGTH_LONG).show();
                 }
-                else {
-                    Log.d(TAG, "Sign in with credential: Failed to login" + task.getException() );
-                    Toast.makeText(FacebookLoggin.this , "Authentication Failed", Toast.LENGTH_SHORT );
-                    UpdateUI(null);
-                }
+
+
             }
         });
 
@@ -143,42 +140,45 @@ public class FacebookLoggin extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        callBack.onActivityResult(requestCode, resultCode, data);
+
         super.onActivityResult(requestCode, resultCode, data);
+        callBack.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void UpdateUI (FirebaseUser user){
+    private void UpdateUI2 (FirebaseUser user){
         if(user != null ){
             userName.setText(user.getDisplayName());
-            if (user.getPhotoUrl() != null ){
-                photoUrl = user.getPhotoUrl();
-                photoUrlstr = photoUrl.toString();
-               // photoUrlstr = photoUrlstr + "?height=500";
-                Url.setText(photoUrlstr);
-                Picasso.get().load(photoUrlstr).into(profilePic);
+            for(UserInfo profile : user.getProviderData()) {
+                // check if the provider id matches "facebook.com"
+                if(FacebookAuthProvider.PROVIDER_ID.equals(profile.getProviderId())) {
+                    facebookUserId = profile.getUid();
+                }
             }
-            else {
-                //userName.setText("");
-                profilePic.setImageResource(R.drawable.com_facebook_tooltip_black_xout);
-            }
+
+            String img = String.valueOf(user.getPhotoUrl()); // is = mAuth.getCurrentUser().getPhotoUrl().toString;
+            String newToken = "?height=1000&access_token=" + AccessToken.getCurrentAccessToken().getToken();
+            Picasso.get().load(img + newToken).into(profilePic);
+            Url.setText(img + newToken);
+
         }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser currentUser = auth.getCurrentUser();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            UpdateUI(currentUser);
+            UpdateUI2(currentUser);
+            userName.setText(currentUser.getDisplayName());
         }
-        auth.addAuthStateListener(authListener);
+        mAuth.addAuthStateListener(authListener);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         if(authListener != null){
-            auth.removeAuthStateListener(authListener);
+            mAuth.removeAuthStateListener(authListener);
         }
     }
 

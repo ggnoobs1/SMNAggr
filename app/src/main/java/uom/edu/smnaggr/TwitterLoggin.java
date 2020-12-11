@@ -148,4 +148,9 @@ public class TwitterLoggin extends AppCompatActivity {
                     }
                 });
     }
+
+    public void signOutTwitter(View view) {
+        FirebaseAuth.getInstance().signOut();
+        mTwitterBtn.setVisibility(View.VISIBLE);
+    }
 }
