@@ -153,7 +153,7 @@ public class FacebookLoggin extends AppCompatActivity {
             if (user.getPhotoUrl() != null ){
                 photoUrl = user.getPhotoUrl();
                 photoUrlstr = photoUrl.toString();
-                photoUrlstr = photoUrlstr + "?height=500";
+               // photoUrlstr = photoUrlstr + "?height=500";
                 Url.setText(photoUrlstr);
                 Picasso.get().load(photoUrlstr).into(profilePic);
             }
