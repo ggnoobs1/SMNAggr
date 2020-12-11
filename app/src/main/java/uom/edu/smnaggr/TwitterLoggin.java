@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -38,6 +39,7 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -215,11 +217,38 @@ public class TwitterLoggin extends AppCompatActivity {
     public void shareTwitter(View view) {
         //
         String mao = String.valueOf(message.getText());
-        String tweetUrl = "https://twitter.com/intent/tweet?text="+mao+" &url="
-                + "https://www.facebook.com/SMNAggr-103223751666202";
-        Uri uri = Uri.parse(tweetUrl);
-        startActivity(new Intent(Intent.ACTION_VIEW, uri));
+       // String tweetUrl = "https://twitter.com/intent/tweet?text="+mao+" &url="
+       //         + "https://www.facebook.com/SMNAggr-103223751666202";
+       // Uri uri = Uri.parse(tweetUrl);
+       // startActivity(new Intent(Intent.ACTION_VIEW, uri));
+
+        icoGallery.invalidate();
+        BitmapDrawable drawable = (BitmapDrawable) icoGallery.getDrawable();
+        Bitmap imagebitmap = drawable.getBitmap();
+
+
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra(
+                Intent.EXTRA_TEXT,
+                "Check this out, what do you think?"
+                        + System.getProperty("line.separator")
+                        + mao);
+
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_STREAM,
+                getImageUri(TwitterLoggin.this, imagebitmap));
+        intent.setPackage("com.twitter.android");
+        startActivity(intent);
         //
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(
+                inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 
     /* Choose an image from Gallery */
