@@ -83,144 +83,30 @@ public class MainActivity extends AppCompatActivity {
     private TextView Url;
     private FirebaseAuth.AuthStateListener authListener;
     private AccessTokenTracker accessTokenTracker;
-    private static final String TAG ="FacebookAuthentication";
+    private static final String TAG = "FacebookAuthentication";
     private Uri photoUrl;
     private String photoUrlstr;
     //edw teleiwnoyn oi metavlhtes gia to fb
-
+    private String value = "Mao Mao";
+    private String value2 = "Oympa Loympa";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // OAuthProvider.Builder provider = OAuthProvider.newBuilder("twitter.com");
-
-/*
-        //This code must be entering before the setContentView to make the twitter login work...
-        TwitterAuthConfig mTwitterAuthConfig = new TwitterAuthConfig(getString(R.string.twitter_consumer_key),
-                getString(R.string.twitter_consumer_secret));
-        TwitterConfig twitterConfig = new TwitterConfig.Builder(this)
-                .twitterAuthConfig(mTwitterAuthConfig)
-                .build();
-        Twitter.initialize(twitterConfig);
-*/
         setContentView(R.layout.activity_main);
-        //meta to setContentView bazw to firebase gia to facebook
-        //
-        //
-       // FacebookSdk.sdkInitialize(getApplicationContext());
-       // AppEventsLogger.activateApp(this);
-        auth = FirebaseAuth.getInstance();
-        FacebookSdk.getApplicationContext();
-        //antistoixizw me layout.xml kai koympwnw to koympi
-        Url = findViewById(R.id.urlText);
-        userName = findViewById(R.id.nameText);
-        profilePic = findViewById(R.id.profileView);
-        fbLogin = findViewById(R.id.login_button);
-        fbLogin.setReadPermissions("email", "public_profile","user_friends","user_birthday");
-        //
-        callBack = CallbackManager.Factory.create();
-
-        fbLogin.registerCallback(callBack , new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                Log.d(TAG, "onSuccess" + loginResult);
-                handleFacebookToken(loginResult.getAccessToken());
-            }
-
-            @Override
-            public void onCancel() {
-                Log.d(TAG, "onCancel");
-
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Log.d(TAG, "onError" + error );
-
-            }
-        });
-
-        authListener = new FirebaseAuth.AuthStateListener(){
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(user != null){
-                    UpdateUI(user);
-                }
-                else{
-                    UpdateUI(null);
-                }
-            }
-        };
-        accessTokenTracker = new AccessTokenTracker() {
-            @Override
-            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-                if(currentAccessToken == null){
-                    auth.signOut();
-                }
-            }
-        };
-
-    }
-    private void handleFacebookToken(AccessToken token){
-        Log.d(TAG , "HandleFacebookToken" + token);
-        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-        auth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    Log.d(TAG, "Sign in with credential: Succesful" );
-                    FirebaseUser user = auth.getCurrentUser();
-                    UpdateUI(user);
-                }
-                else {
-                    Log.d(TAG, "Sign in with credential: Failed to login" + task.getException() );
-                    Toast.makeText(MainActivity.this , "Authentication Failed", Toast.LENGTH_SHORT );
-                    UpdateUI(null);
-                }
-            }
-        });
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        callBack.onActivityResult(requestCode, resultCode, data);
-        super.onActivityResult(requestCode, resultCode, data);
+    public void goToFBActivity(View view) {
+        Intent intent = new Intent(this, FacebookLoggin.class);
+        startActivity(intent);
+
     }
 
-    private void UpdateUI (FirebaseUser user){
-        if(user != null ){
-            userName.setText(user.getDisplayName());
-            if (user.getPhotoUrl() != null ){
-                photoUrl = user.getPhotoUrl();
-                photoUrlstr = photoUrl.toString();
-                photoUrlstr = photoUrlstr + "?height=500";
-                Url.setText(photoUrlstr);
-                Picasso.get().load(photoUrlstr).into(profilePic);
-            }
-            else {
-                //userName.setText("");
-                profilePic.setImageResource(R.drawable.com_facebook_tooltip_black_xout);
-            }
-        }
+    public void goToTwitterActivity(View view) {
+        Intent intent = new Intent(this, TwitterLoggin.class);
+        startActivity(intent);
     }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        auth.addAuthStateListener(authListener);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if(authListener != null){
-            auth.removeAuthStateListener(authListener);
-        }
-    }
-
-
 }
 
     /*

@@ -7,90 +7,31 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!--Twitter Login Button-->
-
-    <com.twitter.sdk.android.core.identity.TwitterLoginButton
-        android:id="@+id/twitter_login_button"
+    <Button
+        android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/button2"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="100dp"
+        android:onClick="goToFBActivity"
+        android:text="Go to Facebook Login" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp" />
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="100dp"
+        android:onClick="goToTwitterActivity"
+        android:text="Go to Twitter Login" />
 
-    <ProgressBar
-        android:id="@+id/indeterminateProgressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="-7dp"
-        android:indeterminate="true"
-        android:visibility="invisible" />
 
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/twitter_login_button"
-        android:layout_alignStart="@+id/twitter_login_button"
-        android:layout_alignEnd="@+id/twitter_login_button"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="100dp" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="206dp"
-        android:layout_height="43dp"
-        android:layout_above="@+id/profileView"
-        android:layout_alignStart="@+id/profileView"
-        android:layout_alignEnd="@+id/profileView"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="50dp"
-        android:autoLink="all"
-        android:text="TextView" />
 
-    <ImageView
-        android:id="@+id/profileView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/login_button"
-        android:layout_alignStart="@+id/login_button"
-        android:layout_alignEnd="@+id/login_button"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="50dp"
-        app:srcCompat="@drawable/com_facebook_tooltip_black_xout"
-        tools:srcCompat="@tools:sample/avatars" />
-
-    <TextView
-        android:id="@+id/nameText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/urlText"
-        android:layout_alignStart="@+id/urlText"
-        android:layout_alignEnd="@+id/urlText"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="30dp"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/urlText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/textView2"
-        android:layout_alignStart="@+id/textView2"
-        android:layout_alignEnd="@+id/textView2"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="30dp"
-        android:text="Hello husky would you like to continue with Facebook ?" />
 
 
 </RelativeLayout>

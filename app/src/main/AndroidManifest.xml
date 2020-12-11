@@ -11,11 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TwitterLoggin">
-
-
-
-        </activity>
+        <activity android:name=".FacebookLoggin"></activity>
+        <activity android:name=".TwitterLoggin"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

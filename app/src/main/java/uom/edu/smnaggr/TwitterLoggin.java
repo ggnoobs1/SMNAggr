@@ -40,6 +40,9 @@ public class TwitterLoggin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //init
+        Intent intent = getIntent();
+        String value = intent.getStringExtra("key"); //if it's a string you stored.
+
         TwitterAuthConfig mTwitterAuthConfig = new TwitterAuthConfig(getString(R.string.twitter_consumer_key),
                 getString(R.string.twitter_consumer_secret));
         TwitterConfig twitterConfig = new TwitterConfig.Builder(this)
@@ -47,7 +50,7 @@ public class TwitterLoggin extends AppCompatActivity {
                 .build();
         Twitter.initialize(twitterConfig);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_twitter_loggin);
         mAuth = FirebaseAuth.getInstance();
 
 
