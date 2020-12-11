@@ -43,7 +43,6 @@ public class FacebookLoggin extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authListener;
     private AccessTokenTracker accessTokenTracker;
     private static final String TAG = "FacebookAuthentication";
-    private String facebookUserId = "";
 
 
     @Override
@@ -62,7 +61,7 @@ public class FacebookLoggin extends AppCompatActivity {
         userName = findViewById(R.id.nameText);
         profilePic = findViewById(R.id.profileView);
         fbLogin = findViewById(R.id.login_button);
-        fbLogin.setReadPermissions("email", "public_profile");
+        fbLogin.setReadPermissions("email", "public_profile","user_photos", "pages_show_list");
         //
         callBack = CallbackManager.Factory.create();
 
@@ -144,7 +143,7 @@ public class FacebookLoggin extends AppCompatActivity {
             for(UserInfo profile : user.getProviderData()) {
                 // check if the provider id matches "facebook.com"
                 if(FacebookAuthProvider.PROVIDER_ID.equals(profile.getProviderId())) {
-                    facebookUserId = profile.getUid();
+                    String facebookUserId = profile.getUid();
                 }
             }
 
@@ -174,8 +173,6 @@ public class FacebookLoggin extends AppCompatActivity {
             mAuth.removeAuthStateListener(authListener);
         }
     }
-
-
 
 
 

@@ -3,17 +3,25 @@ package uom.edu.smnaggr;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,13 +38,29 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import twitter4j.Query;
+import twitter4j.Status;
+import twitter4j.TwitterFactory;
+import twitter4j.conf.ConfigurationBuilder;
+
 public class TwitterLoggin extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private TwitterLoginButton mTwitterBtn;
     private TextView TviewEmail;
+
+    //extras
     private ImageView profilePic2;
+    private TextInputEditText message;
+    private ImageView icoGallery;
+    private static final int SELECT_PICTURE = 100;
+    //extras end
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +79,23 @@ public class TwitterLoggin extends AppCompatActivity {
         setContentView(R.layout.activity_twitter_loggin);
         mAuth = FirebaseAuth.getInstance();
 
+        //extra on create
+        message = findViewById(R.id.maoText);
         profilePic2 = findViewById(R.id.twitterPic);
+        icoGallery = (ImageView) findViewById(R.id.icoGallery);
+        findViewById(R.id.icoGallery).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openImageChooser();
+            }
+        });
+
+        //end
+
         mTwitterBtn = findViewById(R.id.twitter_login_button);
         TviewEmail = findViewById(R.id.emailTxt);
+
+
 
         mTwitterBtn.setCallback(new Callback<TwitterSession>() {
             @Override
@@ -95,6 +133,20 @@ public class TwitterLoggin extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         mTwitterBtn.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SELECT_PICTURE) {
+                // Get the url from data
+                Uri selectedImageUri = data.getData();
+
+                if (null != selectedImageUri) {
+                    // Get the path from the Uri
+
+                    icoGallery.setImageURI(null);
+                    icoGallery.setImageURI(selectedImageUri);
+
+                }
+            }
+        }
 
     }
 
@@ -137,6 +189,7 @@ public class TwitterLoggin extends AppCompatActivity {
         AuthCredential credential = TwitterAuthProvider.getCredential(session.getAuthToken().token,
                 session.getAuthToken().secret);
 
+
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -153,8 +206,30 @@ public class TwitterLoggin extends AppCompatActivity {
                 });
     }
 
+    //extra methods
     public void signOutTwitter(View view) {
         FirebaseAuth.getInstance().signOut();
         mTwitterBtn.setVisibility(View.VISIBLE);
     }
+
+    public void shareTwitter(View view) {
+        //
+        String mao = String.valueOf(message.getText());
+        String tweetUrl = "https://twitter.com/intent/tweet?text="+mao+" &url="
+                + "https://www.facebook.com/SMNAggr-103223751666202";
+        Uri uri = Uri.parse(tweetUrl);
+        startActivity(new Intent(Intent.ACTION_VIEW, uri));
+        //
+    }
+
+    /* Choose an image from Gallery */
+    void openImageChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
+    }
+
+
+
 }

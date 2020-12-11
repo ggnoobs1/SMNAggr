@@ -14,7 +14,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.081"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.042" />
@@ -23,12 +22,12 @@
         android:id="@+id/emailTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="228dp"
+        android:layout_marginTop="5dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/twitter_login_button" />
 
     <Button
         android:id="@+id/TwitterLogout"
@@ -36,22 +35,63 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/button2"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="10dp"
         android:onClick="signOutTwitter"
         android:text="Logout of Firebase"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailTxt" />
 
+    <Button
+        android:id="@+id/shareTwitter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button2"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="10dp"
+        android:onClick="shareTwitter"
+        android:text="Share something on Twitter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <ImageView
         android:id="@+id/twitterPic"
-        android:layout_width="191dp"
-        android:layout_height="193dp"
+        android:layout_width="155dp"
+        android:layout_height="101dp"
         android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TwitterLogout"
         app:srcCompat="@drawable/tw__composer_logo_blue" />
+
+    <ImageView
+        android:id="@+id/icoGallery"
+        android:layout_width="161dp"
+        android:layout_height="135dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/twitterPic"
+        app:srcCompat="@android:drawable/sym_contact_card" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textForStatus"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/icoGallery">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/maoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Type Something to Post on Twitter" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
