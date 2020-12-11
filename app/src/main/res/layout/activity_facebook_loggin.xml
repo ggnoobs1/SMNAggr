@@ -11,21 +11,7 @@
         android:layout_width="198dp"
         android:layout_height="22dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="206dp"
-        android:layout_height="43dp"
-        android:layout_above="@+id/profileView"
-        android:layout_alignStart="@+id/profileView"
-        android:layout_alignEnd="@+id/profileView"
-        android:layout_marginBottom="10dp"
-        android:autoLink="all"
-        android:text="TextView"
+        android:layout_marginBottom="50dp"
         app:layout_constraintBottom_toTopOf="@+id/profileView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -41,7 +27,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/com_facebook_tooltip_black_xout"
+        app:srcCompat="@drawable/com_facebook_profile_picture_blank_square"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
@@ -61,10 +47,10 @@
         android:id="@+id/urlText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textView2"
-        android:layout_alignStart="@+id/textView2"
-        android:layout_alignEnd="@+id/textView2"
-        android:layout_marginBottom="30dp"
+        android:layout_above="@id/nameText"
+        android:layout_alignStart="@id/nameText"
+        android:layout_alignEnd="@id/login_button"
+        android:layout_marginBottom="50dp"
         android:text="Hello husky would you like to continue with Facebook ?"
         app:layout_constraintBottom_toTopOf="@+id/login_button"
         app:layout_constraintEnd_toEndOf="parent"

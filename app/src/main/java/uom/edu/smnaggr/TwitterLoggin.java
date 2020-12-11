@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ public class TwitterLoggin extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private TwitterLoginButton mTwitterBtn;
     private TextView TviewEmail;
+    private ImageView profilePic2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +55,7 @@ public class TwitterLoggin extends AppCompatActivity {
         setContentView(R.layout.activity_twitter_loggin);
         mAuth = FirebaseAuth.getInstance();
 
-
+        profilePic2 = findViewById(R.id.twitterPic);
         mTwitterBtn = findViewById(R.id.twitter_login_button);
         TviewEmail = findViewById(R.id.emailTxt);
 
@@ -110,6 +112,8 @@ public class TwitterLoggin extends AppCompatActivity {
         Toast.makeText(TwitterLoggin.this, "You're logged in", Toast.LENGTH_LONG);
         if(user != null ){
             TviewEmail.setText(user.getDisplayName());
+
+            Picasso.get().load(user.getPhotoUrl().toString()).into(profilePic2);
         }
 
 

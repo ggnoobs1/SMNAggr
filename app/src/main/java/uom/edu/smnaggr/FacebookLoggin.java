@@ -18,10 +18,6 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.HttpMethod;
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,7 +30,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.squareup.picasso.Picasso;
 
-import uom.edu.smnaggr.databinding.ActivityFacebookLogginBinding;
 
 public class FacebookLoggin extends AppCompatActivity {
 
@@ -48,8 +43,6 @@ public class FacebookLoggin extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authListener;
     private AccessTokenTracker accessTokenTracker;
     private static final String TAG = "FacebookAuthentication";
-    private Uri photoUrl;
-    private String photoUrlstr;
     private String facebookUserId = "";
 
 
@@ -181,6 +174,8 @@ public class FacebookLoggin extends AppCompatActivity {
             mAuth.removeAuthStateListener(authListener);
         }
     }
+
+
 
 
 
