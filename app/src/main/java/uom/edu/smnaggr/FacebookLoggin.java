@@ -1,16 +1,22 @@
 package uom.edu.smnaggr;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -20,6 +26,12 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.ShareDialog;
+import com.google.android.gms.common.api.Api;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -28,7 +40,20 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.restfb.DefaultFacebookClient;
+import com.restfb.FacebookClient;
+import com.restfb.Parameter;
+import com.restfb.Version;
+import com.restfb.types.FacebookType;
+import com.restfb.types.Page;
+import com.restfb.types.User;
 import com.squareup.picasso.Picasso;
+
+import java.io.ByteArrayOutputStream;
+
+import static com.restfb.Version.LATEST;
+import static com.restfb.Version.VERSION_3_1;
+import static com.restfb.Version.VERSION_3_2;
 
 
 public class FacebookLoggin extends AppCompatActivity {
@@ -43,7 +68,11 @@ public class FacebookLoggin extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authListener;
     private AccessTokenTracker accessTokenTracker;
     private static final String TAG = "FacebookAuthentication";
+    private static final String LOG_TAG ="share";
+    private static final int SELECT_PICTURE = 100;
+    private ImageView icoGalleryfb;
 
+    private CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +80,19 @@ public class FacebookLoggin extends AppCompatActivity {
         Intent intent = getIntent();
         String value = intent.getStringExtra("key"); //if it's a string you stored.
 
+
         setContentView(R.layout.activity_facebook_loggin);
-        FacebookSdk.sdkInitialize(getApplicationContext());
+
         mAuth = FirebaseAuth.getInstance();
         FacebookSdk.getApplicationContext();
         //antistoixizw me layout.xml kai koympwnw to koympi
+        icoGalleryfb = (ImageView) findViewById(R.id.icoGalleryfb);
+        findViewById(R.id.icoGalleryfb).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openImageChooser();
+            }
+        });
 
         Url = findViewById(R.id.urlText);
         userName = findViewById(R.id.nameText);
@@ -135,6 +172,20 @@ public class FacebookLoggin extends AppCompatActivity {
 
         super.onActivityResult(requestCode, resultCode, data);
         callBack.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SELECT_PICTURE) {
+                // Get the url from data
+                Uri selectedImageUri = data.getData();
+
+                if (null != selectedImageUri) {
+                    // Get the path from the Uri
+
+                    icoGalleryfb.setImageURI(null);
+                    icoGalleryfb.setImageURI(selectedImageUri);
+
+                }
+            }
+        }
     }
 
     private void UpdateUI2 (FirebaseUser user){
@@ -175,5 +226,73 @@ public class FacebookLoggin extends AppCompatActivity {
     }
 
 
+    public void onShareResult(View view){
+        callbackManager = CallbackManager.Factory.create();
+        final ShareDialog shareDialog = new ShareDialog(this);
+
+        shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
+
+            @Override
+            public void onSuccess(Sharer.Result result) {
+                Log.d(LOG_TAG, "success");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.d(LOG_TAG, "error");
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d(LOG_TAG, "cancel");
+            }
+        });
+
+
+        if (shareDialog.canShow(ShareLinkContent.class)) {
+
+            ShareLinkContent linkContent = new ShareLinkContent.Builder()
+
+                    .setContentUrl(Uri.parse("https://developers.facebook.com"))
+
+                    //.setImageUrl(Uri.parse("android.resource://de.ginkoboy.flashcards/" + R.drawable.logo_flashcards_pro))
+                   // .setImageUrl(Uri.parse("http://bagpiper-andy.de/bilder/dudelsack%20app.png"))
+                    .build();
+            icoGalleryfb.invalidate();
+            BitmapDrawable drawable = (BitmapDrawable) icoGalleryfb.getDrawable();
+            Bitmap imagebitmap = drawable.getBitmap();
+            SharePhoto photo = new SharePhoto.Builder()
+                    .setBitmap(imagebitmap)
+                    .build();
+            SharePhotoContent content = new SharePhotoContent.Builder()
+                    .addPhoto(photo)
+                    .build();
+
+            shareDialog.show(content);
+        }
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(
+                inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    /* Choose an image from Gallery */
+    void openImageChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
+    }
+
+
+
 
 }
+
+
+
+
