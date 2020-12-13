@@ -32,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void goToPost(View view) {
-        Intent intent = new Intent(this, TwitterLoggin.class);
+    public void goToTrends(View view) {
+        Intent intent = new Intent(this, TwitterTrends.class);
         startActivity(intent);
     }
 

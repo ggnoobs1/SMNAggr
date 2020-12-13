@@ -44,10 +44,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import twitter4j.HashtagEntity;
 import twitter4j.Query;
 import twitter4j.Status;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
+
 
 public class TwitterLoggin extends AppCompatActivity {
 
@@ -82,6 +84,8 @@ public class TwitterLoggin extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         //extra on create
+
+
         message = findViewById(R.id.maoText);
         profilePic2 = findViewById(R.id.twitterPic);
         icoGallery = (ImageView) findViewById(R.id.icoGallery);
@@ -139,10 +143,8 @@ public class TwitterLoggin extends AppCompatActivity {
             if (requestCode == SELECT_PICTURE) {
                 // Get the url from data
                 Uri selectedImageUri = data.getData();
-
                 if (null != selectedImageUri) {
                     // Get the path from the Uri
-
                     icoGallery.setImageURI(null);
                     icoGallery.setImageURI(selectedImageUri);
 
@@ -166,7 +168,6 @@ public class TwitterLoggin extends AppCompatActivity {
         Toast.makeText(TwitterLoggin.this, "You're logged in", Toast.LENGTH_LONG);
         if(user != null ){
             TviewEmail.setText(user.getDisplayName());
-
             Picasso.get().load(user.getPhotoUrl().toString()).into(profilePic2);
         }
 
@@ -191,7 +192,6 @@ public class TwitterLoggin extends AppCompatActivity {
         AuthCredential credential = TwitterAuthProvider.getCredential(session.getAuthToken().token,
                 session.getAuthToken().secret);
 
-
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -199,8 +199,6 @@ public class TwitterLoggin extends AppCompatActivity {
                         Toast.makeText(TwitterLoggin.this, "Signed in firebase twitter successful", Toast.LENGTH_LONG).show();
                         FirebaseUser user = mAuth.getCurrentUser();
                         updateUI(user);
-
-
                         if (!task.isSuccessful()){
                             Toast.makeText(TwitterLoggin.this, "Auth firebase twitter failed", Toast.LENGTH_LONG).show();
                         }
@@ -242,7 +240,7 @@ public class TwitterLoggin extends AppCompatActivity {
         startActivity(intent);
         //
     }
-
+    // Metatroph eikonase se binary
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
@@ -251,7 +249,7 @@ public class TwitterLoggin extends AppCompatActivity {
         return Uri.parse(path);
     }
 
-    /* Choose an image from Gallery */
+    // Dialegei mia eikona apo th syllogh
     void openImageChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");

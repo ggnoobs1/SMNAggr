@@ -31,40 +31,14 @@
         app:srcCompat="@drawable/com_facebook_profile_picture_blank_square"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <TextView
-        android:id="@+id/nameText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/urlText"
-        android:layout_alignStart="@+id/urlText"
-        android:layout_alignEnd="@+id/urlText"
-        android:layout_marginBottom="30dp"
-        android:text="@string/messenger_send_button_text"
-        app:layout_constraintBottom_toTopOf="@+id/urlText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/urlText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/nameText"
-        android:layout_alignStart="@id/nameText"
-        android:layout_alignEnd="@id/login_button"
-        android:layout_marginBottom="50dp"
-        android:text="Hello husky would you like to continue with Facebook ?"
-        app:layout_constraintBottom_toTopOf="@+id/login_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <Button
         android:id="@+id/shareButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="200dp"
-        android:text="share something"
+        android:layout_marginBottom="20dp"
         android:onClick="onShareResult"
-        app:layout_constraintBottom_toTopOf="@+id/nameText"
+        android:text="share something"
+        app:layout_constraintBottom_toTopOf="@+id/login_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -72,11 +46,59 @@
         android:id="@+id/icoGalleryfb"
         android:layout_width="126dp"
         android:layout_height="94dp"
+        android:layout_marginTop="100dp"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@+id/shareButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/common_full_open_on_phone" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/ic_launcher_round" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputLayout"
+        android:layout_width="319dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/icoGalleryfb">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputText"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:hint="Add some text to share" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <CheckBox
+        android:id="@+id/checkbox_instagram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="Instagram"
+        app:layout_constraintBottom_toTopOf="@+id/icoGalleryfb"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkbox_facebook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="Facebook"
+        app:layout_constraintBottom_toTopOf="@+id/checkbox_instagram"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkbox_twitter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="Twitter"
+        app:layout_constraintBottom_toTopOf="@+id/checkbox_facebook"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

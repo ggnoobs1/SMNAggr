@@ -9,7 +9,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +20,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -27,13 +32,17 @@ import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareContent;
+import com.facebook.share.model.ShareHashtag;
 import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.model.ShareMediaContent;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
 import com.google.android.gms.common.api.Api;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
@@ -50,10 +59,13 @@ import com.restfb.types.User;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 
 import static com.restfb.Version.LATEST;
 import static com.restfb.Version.VERSION_3_1;
 import static com.restfb.Version.VERSION_3_2;
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 
 
 public class FacebookLoggin extends AppCompatActivity {
@@ -61,18 +73,19 @@ public class FacebookLoggin extends AppCompatActivity {
 
     private CallbackManager callBack;
     private FirebaseAuth mAuth;
-    private TextView userName;
     private ImageView profilePic;
     private LoginButton fbLogin;
-    private TextView Url;
     private FirebaseAuth.AuthStateListener authListener;
     private AccessTokenTracker accessTokenTracker;
     private static final String TAG = "FacebookAuthentication";
     private static final String LOG_TAG ="share";
     private static final int SELECT_PICTURE = 100;
     private ImageView icoGalleryfb;
+    private TextInputEditText input;
+    private CheckBox insta, facebook, twitter;
 
     private CallbackManager callbackManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,9 +106,10 @@ public class FacebookLoggin extends AppCompatActivity {
                 openImageChooser();
             }
         });
-
-        Url = findViewById(R.id.urlText);
-        userName = findViewById(R.id.nameText);
+        insta = findViewById(R.id.checkbox_instagram);
+        twitter = findViewById(R.id.checkbox_twitter);
+        facebook = findViewById(R.id.checkbox_facebook);
+        input  = findViewById(R.id.inputText);
         profilePic = findViewById(R.id.profileView);
         fbLogin = findViewById(R.id.login_button);
         fbLogin.setReadPermissions("email", "public_profile","user_photos", "pages_show_list");
@@ -190,7 +204,6 @@ public class FacebookLoggin extends AppCompatActivity {
 
     private void UpdateUI2 (FirebaseUser user){
         if(user != null ){
-            userName.setText(user.getDisplayName());
             for(UserInfo profile : user.getProviderData()) {
                 // check if the provider id matches "facebook.com"
                 if(FacebookAuthProvider.PROVIDER_ID.equals(profile.getProviderId())) {
@@ -201,7 +214,6 @@ public class FacebookLoggin extends AppCompatActivity {
             String img = String.valueOf(user.getPhotoUrl()); // is = mAuth.getCurrentUser().getPhotoUrl().toString;
             String newToken = "?height=1000&access_token=" + AccessToken.getCurrentAccessToken().getToken();
             Picasso.get().load(img + newToken).into(profilePic);
-            Url.setText(img + newToken);
 
         }
     }
@@ -212,7 +224,6 @@ public class FacebookLoggin extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             UpdateUI2(currentUser);
-            userName.setText(currentUser.getDisplayName());
         }
         mAuth.addAuthStateListener(authListener);
     }
@@ -227,49 +238,88 @@ public class FacebookLoggin extends AppCompatActivity {
 
 
     public void onShareResult(View view){
+        //pairnw to keimeno apo to textfield
+        String mao = String.valueOf(input.getText());
+        //ftiaxnw thn eikona bitmap
+        icoGalleryfb.invalidate();
+        BitmapDrawable drawable = (BitmapDrawable) icoGalleryfb.getDrawable();
+        Bitmap imagebitmap = drawable.getBitmap();
+
         callbackManager = CallbackManager.Factory.create();
         final ShareDialog shareDialog = new ShareDialog(this);
 
         shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
-
             @Override
             public void onSuccess(Sharer.Result result) {
                 Log.d(LOG_TAG, "success");
             }
-
             @Override
             public void onError(FacebookException error) {
                 Log.d(LOG_TAG, "error");
             }
-
             @Override
             public void onCancel() {
                 Log.d(LOG_TAG, "cancel");
             }
         });
 
+        if (shareDialog.canShow(SharePhotoContent.class)) {
 
-        if (shareDialog.canShow(ShareLinkContent.class)) {
-
-            ShareLinkContent linkContent = new ShareLinkContent.Builder()
-
-                    .setContentUrl(Uri.parse("https://developers.facebook.com"))
-
-                    //.setImageUrl(Uri.parse("android.resource://de.ginkoboy.flashcards/" + R.drawable.logo_flashcards_pro))
-                   // .setImageUrl(Uri.parse("http://bagpiper-andy.de/bilder/dudelsack%20app.png"))
-                    .build();
-            icoGalleryfb.invalidate();
-            BitmapDrawable drawable = (BitmapDrawable) icoGalleryfb.getDrawable();
-            Bitmap imagebitmap = drawable.getBitmap();
+            //Ftiaxnw to hashtag, to opoio einai apla keimeno, alla den afhnei to fb na valw text alliws
+            ShareHashtag shareHashTag = new ShareHashtag.Builder().setHashtag(mao).build();
+            //ftiaxnw thn fwto se sharable content
             SharePhoto photo = new SharePhoto.Builder()
                     .setBitmap(imagebitmap)
                     .build();
-            SharePhotoContent content = new SharePhotoContent.Builder()
+            SharePhotoContent PhotoContent = new SharePhotoContent.Builder()
+                    .setShareHashtag(shareHashTag)
                     .addPhoto(photo)
                     .build();
 
-            shareDialog.show(content);
+            //anoigw to share me thn epilegmenh fwtografia kai to periexomeno
+            if(facebook.isChecked()) {
+                ShareDialog.show(FacebookLoggin.this, PhotoContent);
+            }
+            if(insta.isChecked()) {
+                createInstagramIntent("image/*");
+            }
+            if(twitter.isChecked()){
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_SEND);
+                intent.putExtra(
+                        Intent.EXTRA_TEXT,
+                        "Check this out, what do you think?"
+                                + System.getProperty("line.separator")
+                                + mao);
+
+                intent.setType("image/*");
+                intent.putExtra(Intent.EXTRA_STREAM,
+                        getImageUri(FacebookLoggin.this, imagebitmap));
+                intent.setPackage("com.twitter.android");
+                startActivity(intent);
+            }
+
         }
+    }
+
+    private void createInstagramIntent(String type){
+
+
+        BitmapDrawable drawable = (BitmapDrawable) icoGalleryfb.getDrawable();
+        Bitmap imagebitmap = drawable.getBitmap();
+        // Create the new Intent using the 'Send' action.
+        Intent share = new Intent(Intent.ACTION_SEND);
+
+        // Set the MIME type
+        share.setType(type);
+
+        // Add the URI to the Intent.
+        share.putExtra(Intent.EXTRA_STREAM, getImageUri(FacebookLoggin.this, imagebitmap));
+        share.setPackage("com.instagram.android");
+        // Broadcast the Intent.
+        startActivity(Intent.createChooser(share, "Share to"));
+       // share.setPackage("com.facebook.katana");
+       // com.instagram.android
     }
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {

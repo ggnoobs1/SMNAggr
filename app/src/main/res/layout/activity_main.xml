@@ -30,7 +30,16 @@
         android:text="Go to Twitter Login" />
 
 
-
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button1"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="100dp"
+        android:onClick="goToTrends"
+        android:text="Go to trends" />
 
 
 
