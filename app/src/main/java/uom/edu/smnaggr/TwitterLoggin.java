@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -46,6 +47,7 @@ import java.util.List;
 
 import twitter4j.HashtagEntity;
 import twitter4j.Query;
+import twitter4j.QueryResult;
 import twitter4j.Status;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
@@ -63,12 +65,20 @@ public class TwitterLoggin extends AppCompatActivity {
     private TextInputEditText message;
     private ImageView icoGallery;
     private static final int SELECT_PICTURE = 100;
+
+    String token1,secret1;
     //extras end
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Todo: Aytes oi 2 grammes einai gia na mhn krasaroyn ta trends,
+        // ALLA einai apla ena tempfix, prepei na kanoyme to programma asyxrono
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        //ews edw
+
         //init
         Intent intent = getIntent();
         String value = intent.getStringExtra("key"); //if it's a string you stored.
@@ -191,6 +201,8 @@ public class TwitterLoggin extends AppCompatActivity {
     private void signInToFirebaseWithTwitterSession(TwitterSession session){
         AuthCredential credential = TwitterAuthProvider.getCredential(session.getAuthToken().token,
                 session.getAuthToken().secret);
+        token1 = session.getAuthToken().token;
+        secret1 =  session.getAuthToken().secret;
 
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -204,12 +216,18 @@ public class TwitterLoggin extends AppCompatActivity {
                         }
                     }
                 });
+
+
     }
 
     //extra methods
     public void signOutTwitter(View view) {
         FirebaseAuth.getInstance().signOut();
         mTwitterBtn.setVisibility(View.VISIBLE);
+    }
+
+    public void onTrendsClick(View view){
+        getMostTrendingTweets(token1,secret1);
     }
 
     public void shareTwitter(View view) {
@@ -255,6 +273,40 @@ public class TwitterLoggin extends AppCompatActivity {
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
+    }
+
+
+    private void getMostTrendingTweets(String token1,String secret1){
+        try{
+            ConfigurationBuilder cb = new ConfigurationBuilder();
+            cb.setDebugEnabled(true)
+                    .setOAuthConsumerKey(getString(R.string.twitter_consumer_key))
+                    .setOAuthConsumerSecret(getString(R.string.twitter_consumer_secret))
+                    .setOAuthAccessToken(token1)
+                    .setOAuthAccessTokenSecret(secret1);
+            TwitterFactory tf = new TwitterFactory(cb.build());
+            twitter4j.Twitter twitter = tf.getInstance();
+            // The factory instance is re-useable and thread safe.
+            //Twitter twitter = TwitterFactory.getSingleton();
+
+
+
+            //Todo: anti gia #mao tha valoume metavlhth na pairnei keimeno apo ena textview, etsi wste na leitoyrgei san search
+            Query query = new Query("#mao");
+            query.setCount(50);
+            QueryResult result = twitter.search(query);
+            int c=0;
+            for (Status status : result.getTweets()) {
+                System.out.println("Status@\t" + status.getUser().getScreenName() + "\t:\t" + status.getText());
+                //Todo: anti gia toast, prepei na to valoyme na ta pernaei sto listview
+                // exei sto lesson11 o xaikalhs paradeigma
+                Toast.makeText(TwitterLoggin.this, "Status@\t" + status.getUser().getScreenName() + "\t:\t" + status.getText(), Toast.LENGTH_LONG).show();
+                c++;
+            }
+            System.out.println("SIZE=== "+c);
+        }catch(Exception e){
+            System.out.println(e);
+        }
     }
 
 

@@ -288,7 +288,7 @@ public class FacebookLoggin extends AppCompatActivity {
                 intent.setAction(Intent.ACTION_SEND);
                 intent.putExtra(
                         Intent.EXTRA_TEXT,
-                        "Check this out, what do you think?"
+                        "savas: Ε ψΑξΤΕ τΟ ρε ΠαΙδΙΑ. GooGlE iS YoUr FriEnD"
                                 + System.getProperty("line.separator")
                                 + mao);
 
