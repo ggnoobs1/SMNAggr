@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TwitterTrends"></activity>
+        <activity android:name=".NewsAdapter"></activity>
+        <activity android:name=".TwitterTrends" />
         <activity android:name=".FacebookLoggin" />
         <activity android:name=".TwitterLoggin" />
         <activity android:name=".MainActivity">

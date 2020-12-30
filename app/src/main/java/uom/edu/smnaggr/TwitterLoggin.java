@@ -81,7 +81,7 @@ public class TwitterLoggin extends AppCompatActivity {
 
         //init
         Intent intent = getIntent();
-        String value = intent.getStringExtra("key"); //if it's a string you stored.
+        token1="MAO";
 
         TwitterAuthConfig mTwitterAuthConfig = new TwitterAuthConfig(getString(R.string.twitter_consumer_key),
                 getString(R.string.twitter_consumer_secret));
@@ -97,6 +97,7 @@ public class TwitterLoggin extends AppCompatActivity {
 
 
         message = findViewById(R.id.maoText);
+        message.setText("Enter something to search on Twitter");
         profilePic2 = findViewById(R.id.twitterPic);
         icoGallery = (ImageView) findViewById(R.id.icoGallery);
         findViewById(R.id.icoGallery).setOnClickListener(new View.OnClickListener() {
@@ -227,7 +228,7 @@ public class TwitterLoggin extends AppCompatActivity {
     }
 
     public void onTrendsClick(View view){
-        getMostTrendingTweets(token1,secret1);
+        goToTrends(token1,secret1);
     }
 
     public void shareTwitter(View view) {
@@ -276,38 +277,26 @@ public class TwitterLoggin extends AppCompatActivity {
     }
 
 
-    private void getMostTrendingTweets(String token1,String secret1){
-        try{
-            ConfigurationBuilder cb = new ConfigurationBuilder();
-            cb.setDebugEnabled(true)
-                    .setOAuthConsumerKey(getString(R.string.twitter_consumer_key))
-                    .setOAuthConsumerSecret(getString(R.string.twitter_consumer_secret))
-                    .setOAuthAccessToken(token1)
-                    .setOAuthAccessTokenSecret(secret1);
-            TwitterFactory tf = new TwitterFactory(cb.build());
-            twitter4j.Twitter twitter = tf.getInstance();
-            // The factory instance is re-useable and thread safe.
-            //Twitter twitter = TwitterFactory.getSingleton();
-
-
-
-            //Todo: anti gia #mao tha valoume metavlhth na pairnei keimeno apo ena textview, etsi wste na leitoyrgei san search
-            Query query = new Query("#mao");
-            query.setCount(50);
-            QueryResult result = twitter.search(query);
-            int c=0;
-            for (Status status : result.getTweets()) {
-                System.out.println("Status@\t" + status.getUser().getScreenName() + "\t:\t" + status.getText());
-                //Todo: anti gia toast, prepei na to valoyme na ta pernaei sto listview
-                // exei sto lesson11 o xaikalhs paradeigma
-                Toast.makeText(TwitterLoggin.this, "Status@\t" + status.getUser().getScreenName() + "\t:\t" + status.getText(), Toast.LENGTH_LONG).show();
-                c++;
+    private void goToTrends(String token1,String secret1){
+        if (token1.equals("MAO")){
+            Toast.makeText(TwitterLoggin.this, "You have not logged In, please login and try again", Toast.LENGTH_LONG).show();
+        }
+        else {
+            if (String.valueOf(message.getText()).equals("Enter something to search on Twitter")){
+                Toast.makeText(TwitterLoggin.this, "You have not typed something to search, please type something in the field and try again",Toast.LENGTH_LONG).show();
             }
-            System.out.println("SIZE=== "+c);
-        }catch(Exception e){
-            System.out.println(e);
+            else {
+                Intent myIntent = new Intent(TwitterLoggin.this, TwitterTrends.class);
+                myIntent.putExtra("token", token1); //Optional parameters
+                myIntent.putExtra("secret", secret1);
+                myIntent.putExtra("search", String.valueOf(message.getText()));
+                TwitterLoggin.this.startActivity(myIntent);
+
+            }
         }
     }
+
+
 
 
 

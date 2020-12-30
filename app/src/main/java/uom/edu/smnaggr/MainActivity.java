@@ -32,10 +32,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void goToTrends(View view) {
-        Intent intent = new Intent(this, TwitterTrends.class);
-        startActivity(intent);
-    }
 
 
 }
