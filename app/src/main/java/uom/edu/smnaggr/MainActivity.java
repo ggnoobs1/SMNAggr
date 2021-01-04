@@ -11,8 +11,6 @@ import com.google.firebase.auth.FirebaseAuth;
 public class MainActivity extends AppCompatActivity {
 
 
-    private String value = "Mao Mao";
-    private String value2 = "Oympa Loympa";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +27,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void goToTwitterActivity(View view) {
         Intent intent = new Intent(this, TwitterLoggin.class);
+        startActivity(intent);
+    }
+
+    public void goToPost(View view) {
+        Intent intent = new Intent(this, PostApi.class);
         startActivity(intent);
     }
 

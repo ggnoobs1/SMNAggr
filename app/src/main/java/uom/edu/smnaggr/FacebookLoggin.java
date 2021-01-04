@@ -4,42 +4,40 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.ListView;
 import android.widget.Toast;
+import java.util.Date;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.facebook.AccessToken;
+import com.facebook.AccessTokenSource;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.facebook.share.Sharer;
-import com.facebook.share.model.ShareContent;
 import com.facebook.share.model.ShareHashtag;
-import com.facebook.share.model.ShareLinkContent;
-import com.facebook.share.model.ShareMediaContent;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
-import com.google.android.gms.common.api.Api;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -49,28 +47,24 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
-import com.restfb.DefaultFacebookClient;
-import com.restfb.FacebookClient;
-import com.restfb.Parameter;
-import com.restfb.Version;
-import com.restfb.types.FacebookType;
-import com.restfb.types.Page;
-import com.restfb.types.User;
 import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import static com.restfb.Version.LATEST;
-import static com.restfb.Version.VERSION_3_1;
-import static com.restfb.Version.VERSION_3_2;
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
 
 
 public class FacebookLoggin extends AppCompatActivity {
 
-
+    public static final String user_id="152620139971720";
+    public static final String page_id="103223751666202";
+    public static final String string_page_token="EAADNOPeW1AUBANFZBU4APKJ5sZBeChYQrM2bXgr2kScdCvONMf6DZA0KAmLQNLwFUuuDMI3Rfx8EbfAK6sxSplD0XWhjPOvplp0WxEgFZC5bxaCxEZA1OA7jFRmFB52xcdyodQLy8D6SZCS1xZCjmaw4mZBhUILKHoZAmizfh2lRKCgxTIHSFmRR9";
     private CallbackManager callBack;
     private FirebaseAuth mAuth;
     private ImageView profilePic;
@@ -83,15 +77,21 @@ public class FacebookLoggin extends AppCompatActivity {
     private ImageView icoGalleryfb;
     private TextInputEditText input;
     private CheckBox insta, facebook, twitter;
+    private ListView listView,listView2;
+    private NewsAdapter newsAdapter;
+    private PostAdapter postAdapter;
+
+
 
     private CallbackManager callbackManager;
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        String value = intent.getStringExtra("key"); //if it's a string you stored.
 
 
         setContentView(R.layout.activity_facebook_loggin);
@@ -106,13 +106,51 @@ public class FacebookLoggin extends AppCompatActivity {
                 openImageChooser();
             }
         });
+
+        listView2 = findViewById(R.id.newsList2);
+        listView = findViewById(R.id.newsListFB);
+        newsAdapter = new NewsAdapter(this, R.layout.activity_news_adapter, new ArrayList<FBEntry>());
+        postAdapter = new PostAdapter(this, R.layout.activity_post_adapter, new ArrayList<PostEntry>());
+        listView.setAdapter(newsAdapter);
+        listView2.setAdapter(postAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent,
+                                    View view,
+                                    int position,
+                                    long id) {
+
+                FBEntry newsEntry = newsAdapter.getNewsEntry(position);
+                String url = newsEntry.getUrl();
+
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+            }
+        });
+
+        listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent,
+                                    View view,
+                                    int position,
+                                    long id) {
+
+                PostEntry postsEntry = postAdapter.getPostEntry(position);
+               // String url = postsEntry.getUrl();
+
+              //  startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+            }
+        });
+
         insta = findViewById(R.id.checkbox_instagram);
         twitter = findViewById(R.id.checkbox_twitter);
         facebook = findViewById(R.id.checkbox_facebook);
         input  = findViewById(R.id.inputText);
         profilePic = findViewById(R.id.profileView);
         fbLogin = findViewById(R.id.login_button);
-        fbLogin.setReadPermissions("email", "public_profile","user_photos", "pages_show_list");
+        fbLogin.setPermissions("email", "public_profile","user_photos", "pages_show_list");
+        fbLogin.setPermissions("pages_read_engagement","pages_manage_posts");
+
         //
         callBack = CallbackManager.Factory.create();
 
@@ -122,6 +160,7 @@ public class FacebookLoggin extends AppCompatActivity {
                 Log.d(TAG, "onSuccess" + loginResult);
                 Toast.makeText(FacebookLoggin.this, "Signed in to facebook successful", Toast.LENGTH_LONG).show();
                 handleFacebookToken(loginResult.getAccessToken());
+
             }
 
             @Override
@@ -232,7 +271,7 @@ public class FacebookLoggin extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         if(authListener != null){
-            mAuth.removeAuthStateListener(authListener);
+           // mAuth.removeAuthStateListener(authListener);
         }
     }
 
@@ -339,7 +378,24 @@ public class FacebookLoggin extends AppCompatActivity {
     }
 
 
+    public void goToPosts(View view) throws JSONException, IOException {
+        System.out.println(AccessToken.getCurrentAccessToken().getToken());
+        fetch();
+    }
+    private void fetch(){
+        FetchUserPages fetchNewsTask = new FetchUserPages(newsAdapter);
+        fetchNewsTask.execute();
+    }
 
+    public void goToPostEntry(View view) throws JSONException, IOException{
+
+        System.out.println(string_page_token);
+        fetchPostID();
+    }
+    private void fetchPostID(){
+        PostFBApi fetchPostEntryTask = new PostFBApi(postAdapter);
+        fetchPostEntryTask.execute();
+    }
 
 }
 

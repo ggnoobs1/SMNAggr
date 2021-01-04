@@ -4,9 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
 import android.content.Context;
-
+import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,36 +16,23 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-
 import java.util.List;
 
-public class NewsAdapter extends ArrayAdapter<FBEntry> {
+public class PostAdapter extends ArrayAdapter<PostEntry> {
 
-    private List<FBEntry> dataset;
     private List<PostEntry> post_dataset;
     private final LayoutInflater inflater;
     private final int layoutResource;
 
-    public NewsAdapter(@NonNull Context context, int resource, @NonNull List<FBEntry> objects) {
+    public PostAdapter(@NonNull Context context, int resource, @NonNull List<PostEntry> objects) {
         super(context, resource, objects);
-        dataset = objects;
+        post_dataset = objects;
         inflater = LayoutInflater.from(context);
         layoutResource = resource;
 
     }
 
 
-    public FBEntry getNewsEntry(int position){
-        if(position < dataset.size() ){
-            return dataset.get(position);
-        }
-        return new FBEntry();
-    }
-
-    public void setNewsEntries(@NonNull List<FBEntry> newsEntries) {
-        dataset = newsEntries;
-        notifyDataSetChanged();
-    }
 
     public void setPostEntries(@NonNull List<PostEntry> postEntries) {
         post_dataset = postEntries;
@@ -60,38 +46,37 @@ public class NewsAdapter extends ArrayAdapter<FBEntry> {
         return new PostEntry();
     }
 
-    static class NewsViewHolder {
+    static class PostViewHolder {
 
         public TextView titleTextView;
         public TextView authorTextView;
         public TextView descriptionTextView;
         public ImageView imageView;
 
-        public NewsViewHolder(View itemView) {
-            titleTextView = itemView.findViewById(R.id.titleTxt);
-            authorTextView = itemView.findViewById(R.id.authorTxt);
-            descriptionTextView = itemView.findViewById(R.id.descriptionTxt);
-            imageView = itemView.findViewById(R.id.newsImage);
+        public PostViewHolder(View itemView) {
+            titleTextView = itemView.findViewById(R.id.titleTxt2);
+           // authorTextView = itemView.findViewById(R.id.authorTxt2);
+            //descriptionTextView = itemView.findViewById(R.id.descriptionTxt2);
+            //imageView = itemView.findViewById(R.id.newsImage2);
         }
     }
 
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        NewsViewHolder holder;
+        PostAdapter.PostViewHolder holder;
         if(convertView == null){
             convertView = inflater.inflate(layoutResource, parent, false);
-            holder = new NewsViewHolder(convertView);
+            holder = new PostAdapter.PostViewHolder(convertView);
             convertView.setTag(holder);
         }
         else{
-            holder = (NewsViewHolder)convertView.getTag();
+            holder = (PostAdapter.PostViewHolder)convertView.getTag();
         }
 
-        FBEntry newsEntry = dataset.get(position);
-        holder.titleTextView.setText(newsEntry.getCategory());
-        holder.authorTextView.setText(newsEntry.getToken());
-        holder.descriptionTextView.setText(Html.fromHtml(newsEntry.getName()));
-        Picasso.get().load(newsEntry.getUrlToImage()).into(holder.imageView);
+        PostEntry postEntry = post_dataset.get(position);
+
+        holder.titleTextView.setText(postEntry.getPost_id());
+
 
         return convertView;
     }
@@ -99,6 +84,6 @@ public class NewsAdapter extends ArrayAdapter<FBEntry> {
     @Override
     public int getCount() {
 
-        return dataset.size();
+        return post_dataset.size();
     }
 }
