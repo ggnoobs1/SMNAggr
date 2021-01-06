@@ -16,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        permissionsVerification();
+
 
     }
 
@@ -34,7 +36,18 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, PostApi.class);
         startActivity(intent);
     }
+    private void permissionsVerification (){
+        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA};
 
+        if(ContextCompat.checkSelfPermission(this.getApplicationContext(),permissions[0])== getPackageManager().PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this.getApplicationContext(),permissions[1])== getPackageManager().PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this.getApplicationContext(),permissions[2])== getPackageManager().PERMISSION_GRANTED){
+        }
+        else{
+            ActivityCompat.requestPermissions(MainActivity.this,permissions,1);
+        }
+    }
 
 
 }
