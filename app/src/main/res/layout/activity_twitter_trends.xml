@@ -24,9 +24,9 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <ListView
-        android:id="@+id/newsList1"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:id="@+id/newsListTrends"
+        android:layout_width="406dp"
+        android:layout_height="624dp"
         android:layout_marginTop="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,4 +34,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/FetchTweets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Fetch"
+        android:onClick="goToFetch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

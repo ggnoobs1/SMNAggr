@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="uom.edu.smnaggr">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,12 +13,17 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PostAdapter"></activity>
-        <activity android:name=".PostFBApi" />
+        <activity android:name=".PostAdapter"
+            tools:ignore="Instantiatable"></activity>
+        <activity android:name=".PostFBApi"
+            tools:ignore="Instantiatable" />
         <activity android:name=".PostApi" />
-        <activity android:name=".FetchUserPages" />
-        <activity android:name=".NewsAdapter" />
+        <activity android:name=".FetchUserPages"
+            tools:ignore="Instantiatable" />
+        <activity android:name=".NewsAdapter"
+            tools:ignore="Instantiatable" />
         <activity android:name=".TwitterTrends" />
         <activity android:name=".FacebookLoggin" />
         <activity android:name=".TwitterLoggin" />

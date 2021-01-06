@@ -18,8 +18,8 @@
 
     <ListView
         android:id="@+id/newsListFB"
-        android:layout_width="603dp"
-        android:layout_height="126dp"
+        android:layout_width="408dp"
+        android:layout_height="106dp"
         android:layout_marginTop="80dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -28,8 +28,8 @@
 
     <ListView
         android:id="@+id/newsList2"
-        android:layout_width="599dp"
-        android:layout_height="700dp"
+        android:layout_width="401dp"
+        android:layout_height="197dp"
         android:layout_marginTop="250dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

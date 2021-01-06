@@ -75,8 +75,8 @@ public class TwitterLoggin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //Todo: Aytes oi 2 grammes einai gia na mhn krasaroyn ta trends,
         // ALLA einai apla ena tempfix, prepei na kanoyme to programma asyxrono
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+       // StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+      //  StrictMode.setThreadPolicy(policy);
         //ews edw
 
         //init
@@ -276,7 +276,6 @@ public class TwitterLoggin extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
     }
 
-
     private void goToTrends(String token1,String secret1){
         if (token1.equals("MAO")){
             Toast.makeText(TwitterLoggin.this, "You have not logged In, please login and try again", Toast.LENGTH_LONG).show();
@@ -287,6 +286,8 @@ public class TwitterLoggin extends AppCompatActivity {
             }
             else {
                 Intent myIntent = new Intent(TwitterLoggin.this, TwitterTrends.class);
+                System.out.println(token1);
+                System.out.println(secret1);
                 myIntent.putExtra("token", token1); //Optional parameters
                 myIntent.putExtra("secret", secret1);
                 myIntent.putExtra("search", String.valueOf(message.getText()));
