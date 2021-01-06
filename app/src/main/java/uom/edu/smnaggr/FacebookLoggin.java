@@ -82,7 +82,6 @@ public class FacebookLoggin extends AppCompatActivity {
     private PostAdapter postAdapter;
 
 
-
     private CallbackManager callbackManager;
 
 
@@ -247,13 +246,11 @@ public class FacebookLoggin extends AppCompatActivity {
                 // check if the provider id matches "facebook.com"
                 if(FacebookAuthProvider.PROVIDER_ID.equals(profile.getProviderId())) {
                     String facebookUserId = profile.getUid();
+                    String img = String.valueOf(user.getPhotoUrl()); // is = mAuth.getCurrentUser().getPhotoUrl().toString;
+                    String newToken = "?height=1000&access_token=" + AccessToken.getCurrentAccessToken().getToken();
+                    Picasso.get().load(img + newToken).into(profilePic);
                 }
             }
-
-            String img = String.valueOf(user.getPhotoUrl()); // is = mAuth.getCurrentUser().getPhotoUrl().toString;
-            String newToken = "?height=1000&access_token=" + AccessToken.getCurrentAccessToken().getToken();
-            Picasso.get().load(img + newToken).into(profilePic);
-
         }
     }
 
@@ -264,6 +261,7 @@ public class FacebookLoggin extends AppCompatActivity {
         if (currentUser != null) {
             UpdateUI2(currentUser);
         }
+
         mAuth.addAuthStateListener(authListener);
     }
 
