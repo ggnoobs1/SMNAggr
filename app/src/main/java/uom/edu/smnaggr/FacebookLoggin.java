@@ -22,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.AccessToken;
+import com.facebook.AccessTokenManager;
 import com.facebook.AccessTokenSource;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -31,6 +32,7 @@ import com.facebook.FacebookSdk;
 
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.facebook.share.Sharer;
@@ -49,6 +51,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -80,10 +83,10 @@ public class FacebookLoggin extends AppCompatActivity {
     private ListView listView,listView2;
     private NewsAdapter newsAdapter;
     private PostAdapter postAdapter;
+    private String stored_post_id;
 
 
     private CallbackManager callbackManager;
-
 
 
 
@@ -94,6 +97,7 @@ public class FacebookLoggin extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_facebook_loggin);
+
 
         mAuth = FirebaseAuth.getInstance();
         FacebookSdk.getApplicationContext();
@@ -394,6 +398,39 @@ public class FacebookLoggin extends AppCompatActivity {
         PostFBApi fetchPostEntryTask = new PostFBApi(postAdapter);
         fetchPostEntryTask.execute();
     }
+
+    public void postSDK(View view){
+        final String post_id_value = "id";
+        AccessToken newToken = new AccessToken(string_page_token,
+                String.valueOf(R.string.facebook_app_id),
+                String.valueOf(R.string.user_id),
+                null,
+                null,
+                null,
+                null,null,null,null);
+
+        Bundle params = new Bundle();
+        params.putString("message", "This_xD_message");
+        /* make the API call */
+        new GraphRequest(
+                newToken,
+                "/103223751666202/feed",
+                params,
+                HttpMethod.POST,
+                new GraphRequest.Callback() {
+                    public void onCompleted(GraphResponse response) {
+                        /* handle the result */
+                        try {
+                            stored_post_id = response.getJSONObject().getString(post_id_value);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        ).executeAsync();
+
+    }
+
 
 }
 

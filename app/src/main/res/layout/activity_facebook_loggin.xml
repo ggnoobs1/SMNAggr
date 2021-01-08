@@ -18,8 +18,8 @@
 
     <ListView
         android:id="@+id/newsListFB"
-        android:layout_width="408dp"
-        android:layout_height="106dp"
+        android:layout_width="413dp"
+        android:layout_height="308dp"
         android:layout_marginTop="80dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -28,8 +28,8 @@
 
     <ListView
         android:id="@+id/newsList2"
-        android:layout_width="401dp"
-        android:layout_height="197dp"
+        android:layout_width="396dp"
+        android:layout_height="138dp"
         android:layout_marginTop="250dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -122,8 +122,8 @@
 
     <Button
         android:id="@+id/button5"
-        android:layout_width="176dp"
-        android:layout_height="77dp"
+        android:layout_width="105dp"
+        android:layout_height="76dp"
         android:onClick="goToPosts"
         android:text="XD button"
         app:layout_constraintStart_toStartOf="parent"
@@ -131,11 +131,24 @@
 
     <Button
         android:id="@+id/button6"
-        android:layout_width="192dp"
-        android:layout_height="73dp"
-        android:text="Post Entry"
+        android:layout_width="107dp"
+        android:layout_height="70dp"
         android:onClick="goToPostEntry"
+        android:text="Post Entry"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/postSDK"
+        android:layout_width="90dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="SDK post"
+        android:onClick="postSDK"
+        app:layout_constraintEnd_toStartOf="@+id/button6"
+        app:layout_constraintStart_toEndOf="@+id/button5"
         app:layout_constraintTop_toTopOf="parent" />
 
 

@@ -164,8 +164,8 @@ public class FetchTweets extends AsyncTask<String, Void, List<TwitterEntry>> {
             httpConnection.setDoOutput(true);
             httpConnection.setDoInput(true);
 
-            String accessCredential = String.valueOf(R.string.twitter_consumer_key) + ":"
-                    + String.valueOf(R.string.twitter_consumer_secret);
+            String accessCredential = R.string.twitter_consumer_key + ":"
+                    + R.string.twitter_consumer_secret;
             String authorization = "Basic "
                     + Base64.encodeToString(accessCredential.getBytes(),
                     Base64.NO_WRAP);
