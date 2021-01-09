@@ -1,5 +1,6 @@
 package uom.edu.smnaggr;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -280,6 +281,7 @@ public class FacebookLoggin extends AppCompatActivity {
     }
 
 
+    @SuppressLint("NewApi")
     public void onShareResult(View view){
         //pairnw to keimeno apo to textfield
         String mao = String.valueOf(input.getText());
@@ -345,6 +347,7 @@ public class FacebookLoggin extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("NewApi")
     private void createInstagramIntent(String type){
 
 
@@ -386,6 +389,7 @@ public class FacebookLoggin extends AppCompatActivity {
         System.out.println(AccessToken.getCurrentAccessToken().getToken());
         fetch();
     }
+    @SuppressLint("NewApi")
     private void fetch(){
         FetchUserPages fetchNewsTask = new FetchUserPages(newsAdapter);
         fetchNewsTask.execute();
@@ -396,6 +400,7 @@ public class FacebookLoggin extends AppCompatActivity {
         System.out.println(string_page_token);
         fetchPostID();
     }
+    @SuppressLint("NewApi")
     private void fetchPostID(){
         PostFBApi fetchPostEntryTask = new PostFBApi(postAdapter);
         fetchPostEntryTask.execute();
