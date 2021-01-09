@@ -110,12 +110,12 @@ public class FacebookLoggin extends AppCompatActivity {
             }
         });
 
-        listView2 = findViewById(R.id.newsList2);
+        //listView2 = findViewById(R.id.newsList2);
         listView = findViewById(R.id.newsListFB);
         newsAdapter = new NewsAdapter(this, R.layout.activity_news_adapter, new ArrayList<FBEntry>());
         postAdapter = new PostAdapter(this, R.layout.activity_post_adapter, new ArrayList<PostEntry>());
         listView.setAdapter(newsAdapter);
-        listView2.setAdapter(postAdapter);
+        //listView2.setAdapter(postAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -130,7 +130,7 @@ public class FacebookLoggin extends AppCompatActivity {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
             }
         });
-
+/*
         listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent,
@@ -145,6 +145,8 @@ public class FacebookLoggin extends AppCompatActivity {
             }
         });
 
+
+ */
         insta = findViewById(R.id.checkbox_instagram);
         twitter = findViewById(R.id.checkbox_twitter);
         facebook = findViewById(R.id.checkbox_facebook);
@@ -429,6 +431,41 @@ public class FacebookLoggin extends AppCompatActivity {
                 }
         ).executeAsync();
 
+    }
+
+    public void postImageUrl(View view){
+
+        BitmapDrawable drawable = (BitmapDrawable) icoGalleryfb.getDrawable();
+        Bitmap imagebitmap = drawable.getBitmap();
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        imagebitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        byte[] byteArray = bytes.toByteArray();
+
+        AccessToken newToken = new AccessToken(string_page_token,
+                String.valueOf(R.string.facebook_app_id),
+                String.valueOf(R.string.user_id),
+                null,
+                null,
+                null,
+                null,null,null,null);
+        Bundle params = new Bundle();
+        params.putString("message", "This_xD_message");
+       // params.putString("url", "https://image.shutterstock.com/image-photo/white-transparent-leaf-on-mirror-260nw-1029171697.jpg");
+        params.putByteArray("multipart/form-data",byteArray);
+       // params.putString("message", "This_xD_message");
+       // params.putString("message","test_image_with_text");
+        /* make the API call */
+        new GraphRequest(
+                newToken,
+                "/103223751666202/photos",
+                params,
+                HttpMethod.POST,
+                new GraphRequest.Callback() {
+                    public void onCompleted(GraphResponse response) {
+                        /* handle the result */
+                    }
+                }
+        ).executeAsync();
     }
 
 
