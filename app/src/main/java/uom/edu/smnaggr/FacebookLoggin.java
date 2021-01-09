@@ -445,6 +445,7 @@ public class FacebookLoggin extends AppCompatActivity {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         imagebitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         byte[] byteArray = bytes.toByteArray();
+        String Messegario= String.valueOf(input.getText());
 
         AccessToken newToken = new AccessToken(string_page_token,
                 String.valueOf(R.string.facebook_app_id),
@@ -454,7 +455,7 @@ public class FacebookLoggin extends AppCompatActivity {
                 null,
                 null,null,null,null);
         Bundle params = new Bundle();
-        params.putString("message", "This_xD_message");
+        params.putString("message", Messegario);
        // params.putString("url", "https://image.shutterstock.com/image-photo/white-transparent-leaf-on-mirror-260nw-1029171697.jpg");
         params.putByteArray("multipart/form-data",byteArray);
        // params.putString("message", "This_xD_message");
