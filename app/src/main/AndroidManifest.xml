@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -14,16 +14,21 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".PostAdapter"
-            tools:ignore="Instantiatable"></activity>
-        <activity android:name=".PostFBApi"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".FetchOauth2"></activity>
+        <activity
+            android:name=".PostAdapter"
+            tools:ignore="Instantiatable" />
+        <activity
+            android:name=".PostFBApi"
             tools:ignore="Instantiatable" />
         <activity android:name=".PostApi" />
-        <activity android:name=".FetchUserPages"
+        <activity
+            android:name=".FetchUserPages"
             tools:ignore="Instantiatable" />
-        <activity android:name=".NewsAdapter"
+        <activity
+            android:name=".NewsAdapter"
             tools:ignore="Instantiatable" />
         <activity android:name=".TwitterTrends" />
         <activity android:name=".FacebookLoggin" />

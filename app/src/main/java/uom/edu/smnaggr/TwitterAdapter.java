@@ -72,14 +72,14 @@ public class TwitterAdapter extends ArrayAdapter<TwitterEntry> {
 
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        TwitterAdapter.TwitterViewHolder holder;
+        TwitterViewHolder holder;
         if(convertView == null){
             convertView = inflater.inflate(layoutResource, parent, false);
-            holder = new TwitterAdapter.TwitterViewHolder(convertView);
+            holder = new TwitterViewHolder(convertView);
             convertView.setTag(holder);
         }
         else{
-            holder = (TwitterAdapter.TwitterViewHolder)convertView.getTag();
+            holder = (TwitterViewHolder)convertView.getTag();
         }
 
         TwitterEntry twEntry = dataset.get(position);

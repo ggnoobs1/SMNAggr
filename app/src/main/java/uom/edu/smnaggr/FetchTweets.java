@@ -3,6 +3,7 @@ package uom.edu.smnaggr;
 import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,6 +19,14 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import twitter4j.Query;
+import twitter4j.QueryResult;
+import twitter4j.Status;
+import twitter4j.Trends;
+import twitter4j.TwitterFactory;
+import twitter4j.conf.ConfigurationBuilder;
+
+import static android.provider.Settings.System.getString;
 
 
 public class FetchTweets extends AsyncTask<String, Void, List<TwitterEntry>> {
@@ -26,7 +35,7 @@ public class FetchTweets extends AsyncTask<String, Void, List<TwitterEntry>> {
     //1 is for global
     private String stringLocationID = "1";
 
-    private String token,secret;
+    private String token,secret,search;
 
     public final String URL_ROOT_TWITTER_API = "https://api.twitter.com";
     public final String URL_SEARCH = URL_ROOT_TWITTER_API + "/1.1/search/tweets.json?q=";
@@ -39,11 +48,12 @@ public class FetchTweets extends AsyncTask<String, Void, List<TwitterEntry>> {
     private TwitterAdapter twitterAdapter;
 
     public FetchTweets(TwitterAdapter twitterAdapter
-            ,String token, String secret
+            ,String token, String secret, String search
     ) {
         this.twitterAdapter = twitterAdapter;
         this.token = token;
         this.secret =secret;
+        this.search= search;
     }
 
     private List<TwitterEntry> getTrendsFromJSON(String trendsJSONString)
@@ -79,26 +89,77 @@ public class FetchTweets extends AsyncTask<String, Void, List<TwitterEntry>> {
     @Override
     protected List<TwitterEntry> doInBackground(String... params) {
 
+        try{
+            ConfigurationBuilder cb = new ConfigurationBuilder();
+            cb.setDebugEnabled(true)
+                    .setOAuthConsumerKey("2Sg4q1Ud5Aq43QP2KPo2ecW5G")
+                    .setOAuthConsumerSecret("7JUsNIVKg26CLoRHBZsI9HJJAxcV0XFvvqCDD8phqY7YAmfX3p")
+                    .setOAuthAccessToken(token)
+                    .setOAuthAccessTokenSecret(secret);
+            TwitterFactory tf = new TwitterFactory(cb.build());
+            twitter4j.Twitter twitter = tf.getInstance();
+            // The factory instance is re-useable and thread safe.
+            //Twitter twitter = TwitterFactory.getSingleton();
+
+
+            Query query = new Query(search);
+            query.setCount(50);
+            QueryResult result = twitter.search(query);
+
+            int c=0;
+            List<TwitterEntry> entries2 = new ArrayList<>();
+            for (twitter4j.Status status : result.getTweets()) {
+                TwitterEntry entry = new TwitterEntry();
+                //listTweets.add("Status @" + status.getUser().getScreenName() + "\t:\t" + status.getText());
+                System.out.println("Status@\t" + status.getUser().getScreenName() + "\t:\t" + status.getText());
+                //Todo: anti gia toast, prepei na to valoyme na ta pernaei sto listview
+                // exei sto lesson11 o xaikalhs paradeigma
+                //Toast.makeText(TwitterTrends.this, "Status@\t" + status.getUser().getScreenName() + "\t:\t" + status.getText(), Toast.LENGTH_LONG).show();
+                c++;
+                entry.setName(status.getUser().getScreenName());
+                entry.setQuery(status.getText());
+                entries2.add(entry);
+            }
+
+
+            System.out.println("SIZE=== "+c);
+            return entries2;
+            /*
+            ResponseList<Location> locations;
+            locations = twitter.getAvailableTrends();
+            System.out.println("Showing available trends");
+            for (Location location : locations) {
+                System.out.println(location.getName() + " (woeid:" + location.getWoeid() + ")");
+            }
+            */
+          //  Trends trends = twitter.getPlaceTrends(963291);
+        //    for (int i = 0; i < trends.getTrends().length; i++) {
+       //         System.out.println(trends.getTrends()[i].getName());
+       //     }
+        }catch(Exception e){
+            System.out.println(e);
+        }
+
+
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
         String baseUrl = "https://api.twitter.com/1.1/trends/place.json?id="+stringLocationID;
 
-        System.out.println(baseUrl);
         try {
             URL url1 = new URL(baseUrl);
-            System.out.println(baseUrl);
 
             urlConnection = (HttpURLConnection) url1.openConnection();
             urlConnection.setRequestMethod("GET");
 
-            String jsonString = appAuthentication();
-            JSONObject jsonObjectDocument = new JSONObject(jsonString);
-            String token = jsonObjectDocument.getString("token_type") + " "
-                    + jsonObjectDocument.getString("access_token");
+
+           // JSONObject jsonObjectDocument = new JSONObject(jsonToken);
+            String token1 = "bearer" + " "
+                    + Base64.encodeToString(token.getBytes(),
+                    Base64.NO_WRAP);
 
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
-            urlConnection.setRequestProperty("Authorization", token);
-        //    urlConnection.setRequestProperty("Authorization", token);
+            urlConnection.setRequestProperty("Authorization", token1);
+            urlConnection.setRequestProperty("Authorization", token1);
             urlConnection.setRequestProperty("Content-Type",
                     "application/json");
             urlConnection.connect();
@@ -145,68 +206,12 @@ public class FetchTweets extends AsyncTask<String, Void, List<TwitterEntry>> {
 
 
 
+
     @Override
     protected void onPostExecute(List<TwitterEntry> twitterEntries) {
         twitterAdapter.setTwitterEntries(twitterEntries);
     }
 
-    public String appAuthentication() {
-
-        HttpURLConnection httpConnection = null;
-        OutputStream outputStream = null;
-        BufferedReader bufferedReader = null;
-        StringBuilder response = null;
-
-        try {
-            URL url = new URL(URL_AUTHENTICATION);
-            httpConnection = (HttpURLConnection) url.openConnection();
-            httpConnection.setRequestMethod("POST");
-            httpConnection.setDoOutput(true);
-            httpConnection.setDoInput(true);
-
-            String accessCredential = R.string.twitter_consumer_key + ":"
-                    + R.string.twitter_consumer_secret;
-            String authorization = "Basic "
-                    + Base64.encodeToString(accessCredential.getBytes(),
-                    Base64.NO_WRAP);
-            String param = "grant_type=client_credentials";
-
-            httpConnection.addRequestProperty("Authorization", authorization);
-            httpConnection.setRequestProperty("Content-Type",
-                    "application/x-www-form-urlencoded;charset=UTF-8");
-            httpConnection.connect();
-
-            outputStream = httpConnection.getOutputStream();
-            outputStream.write(param.getBytes());
-            outputStream.flush();
-            outputStream.close();
-            // int statusCode = httpConnection.getResponseCode();
-            // String reason =httpConnection.getResponseMessage();
-
-            bufferedReader = new BufferedReader(new InputStreamReader(
-                    httpConnection.getInputStream()));
-            String line;
-            response = new StringBuilder();
-
-            while ((line = bufferedReader.readLine()) != null) {
-                response.append(line);
-            }
-
-            Log.d(LOG_TAG,
-                    "POST response code: "
-                            + String.valueOf(httpConnection.getResponseCode()));
-            Log.d(LOG_TAG, "JSON response: " + response.toString());
-
-        } catch (Exception e) {
-            Log.e(LOG_TAG, "POST error: " + Log.getStackTraceString(e));
-
-        } finally {
-            if (httpConnection != null) {
-                httpConnection.disconnect();
-            }
-        }
-        return response.toString();
-    }
 
 
 }

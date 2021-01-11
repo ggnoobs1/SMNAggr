@@ -1,7 +1,6 @@
 package uom.edu.smnaggr;
 
 public class TwitterEntry {
-
     private String name;
     private String url;
     private String query;

@@ -15,7 +15,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,14 +34,17 @@ import twitter4j.conf.ConfigurationBuilder;
 
 public class TwitterTrends extends AppCompatActivity {
 
+
+
     ArrayList<String> listTweets = new ArrayList<String>();
     private TwitterAdapter twitterAdapter;
     private ListView listViewTrends;
-    private String token1,secret1,search1;
+    private String token1,secret1,search1,jsonString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Intent intent = getIntent();
         token1 = intent.getStringExtra("token");
         secret1 = intent.getStringExtra("secret");
@@ -63,7 +71,8 @@ public class TwitterTrends extends AppCompatActivity {
             }
         });
 
-        twitterAdapter.setTwitterEntries(getTrends2(token1,secret1,search1));
+
+      //  twitterAdapter.setTwitterEntries(getTrends2(token1,secret1,search1));
 
 
 
@@ -72,13 +81,13 @@ public class TwitterTrends extends AppCompatActivity {
     public void goToFetch(View view) throws JSONException, IOException {
 
         System.out.println("eftasa edw");
-        fetchTrends(token1,secret1);
+        fetchTrends();
     }
 
-    private void fetchTrends(String token,String secret){
+    private void fetchTrends(){
         System.out.println("eftasa edw 2");
         FetchTweets fetchTweetsTask = new FetchTweets(twitterAdapter
-                ,token,secret
+                ,token1,secret1,search1
         );
         fetchTweetsTask.execute();
     }
@@ -164,6 +173,17 @@ public class TwitterTrends extends AppCompatActivity {
             System.out.println(e);
         }
         return twitterEntries;
+    }
+
+    public void goToAuth(View view){
+        System.out.println("eftasa edw3");
+        fetchAuth();
+    }
+
+    public void fetchAuth(){
+        System.out.println("eftasa edw 4");
+        FetchOauth2 fetchAuthTask = new FetchOauth2(jsonString);
+        fetchAuthTask.execute();
     }
 
 
