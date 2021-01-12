@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     // android:text="@string/FacebookLogin" />
     // kai sto values.xml exw ftiaksei ayto gia na pairnei to string apo ekei
     // <string name="FacebookLogin">Go To Facebook Login</string>
+    // prosoxh mhn valeis string poy yparxei hdh me aythn thn onomasia
+    // kai prosoxh mhn valeis lathos @string/ 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
