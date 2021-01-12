@@ -16,7 +16,7 @@
         android:layout_marginEnd="100dp"
         android:layout_marginBottom="100dp"
         android:onClick="goToFBActivity"
-        android:text="Go to Facebook Login" />
+        android:text="@string/FacebookLogin" />
 
     <Button
         android:id="@+id/button2"

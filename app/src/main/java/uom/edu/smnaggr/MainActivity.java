@@ -17,6 +17,15 @@ public class MainActivity extends AppCompatActivity {
 
     //TODO: veltiwsh toy UI kai allagh twn contraints sta koympia sto MainActrivity
 
+
+    //TODO: shmantiko na valoyme mesa sto arxeio values ta strings poy xrhsimopoioyme
+    // paradeigma sto activity_main.xml ekei poy eixe
+    // android:text="Go To Facebook Login"
+    // exw valei
+    // android:text="@string/FacebookLogin" />
+    // kai sto values.xml exw ftiaksei ayto gia na pairnei to string apo ekei
+    // <string name="FacebookLogin">Go To Facebook Login</string>
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
