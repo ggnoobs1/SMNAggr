@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".FetchOauth2"></activity>
+        <activity android:name=".FetchTrends"></activity>
+        <activity android:name=".PostTwitterAsync" />
         <activity
             android:name=".PostAdapter"
             tools:ignore="Instantiatable" />

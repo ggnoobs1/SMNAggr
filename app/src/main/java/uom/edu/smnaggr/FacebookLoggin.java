@@ -15,6 +15,8 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import java.io.ByteArrayInputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -63,6 +65,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.conf.ConfigurationBuilder;
+
 
 public class FacebookLoggin extends AppCompatActivity {
 
@@ -85,6 +93,9 @@ public class FacebookLoggin extends AppCompatActivity {
     private NewsAdapter newsAdapter;
     private PostAdapter postAdapter;
     private String stored_post_id;
+    private String token1="mao";
+    private String secret1="mao";
+    private String confirmationText=null;
 
 
     private CallbackManager callbackManager;
@@ -95,10 +106,9 @@ public class FacebookLoggin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-
-
+        token1 = intent.getStringExtra("token");
+        secret1 = intent.getStringExtra("secret");
         setContentView(R.layout.activity_facebook_loggin);
-
 
         mAuth = FirebaseAuth.getInstance();
         FacebookSdk.getApplicationContext();
@@ -445,7 +455,8 @@ public class FacebookLoggin extends AppCompatActivity {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         imagebitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         byte[] byteArray = bytes.toByteArray();
-        String Messegario= String.valueOf(input.getText());
+        String Messegario= String.valueOf(input);
+
 
         AccessToken newToken = new AccessToken(string_page_token,
                 String.valueOf(R.string.facebook_app_id),
@@ -472,6 +483,28 @@ public class FacebookLoggin extends AppCompatActivity {
                     }
                 }
         ).executeAsync();
+    }
+
+    public void postTwitter(View view){
+        String postText = String.valueOf(input.getText());
+
+        BitmapDrawable drawable = (BitmapDrawable) icoGalleryfb.getDrawable();
+        Bitmap imagebitmap = drawable.getBitmap();
+
+        if (postText==null){
+            Toast.makeText(FacebookLoggin.this, "You have not entered text to post, please type something and try again", Toast.LENGTH_LONG).show();
+        }
+        else {
+            if (token1=="mao"){
+                Toast.makeText(FacebookLoggin.this, "You have not logged in with Twitter, please login and try again", Toast.LENGTH_LONG).show();
+            }
+            else {
+                PostTwitterAsync postTask = new PostTwitterAsync(token1, secret1, confirmationText, postText,imagebitmap);
+                postTask.execute();
+            }
+        }
+
+
     }
 
 

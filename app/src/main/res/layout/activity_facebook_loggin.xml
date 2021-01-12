@@ -142,5 +142,16 @@
         app:layout_constraintStart_toEndOf="@+id/button5"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/postApiTwitter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="5dp"
+        android:text="Post Twitter"
+        android:onClick="postTwitter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button6" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

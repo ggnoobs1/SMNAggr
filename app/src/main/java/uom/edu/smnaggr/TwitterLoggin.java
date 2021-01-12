@@ -60,26 +60,17 @@ public class TwitterLoggin extends AppCompatActivity {
     private TwitterLoginButton mTwitterBtn;
     private TextView TviewEmail;
 
-    //extras
     private ImageView profilePic2;
     private TextInputEditText message;
     private ImageView icoGallery;
     private static final int SELECT_PICTURE = 100;
-
     String token1,secret1;
-    //extras end
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Todo: Aytes oi 2 grammes einai gia na mhn krasaroyn ta trends,
-        // ALLA einai apla ena tempfix, prepei na kanoyme to programma asyxrono
-       // StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-      //  StrictMode.setThreadPolicy(policy);
-        //ews edw
 
-        //init
         Intent intent = getIntent();
         token1="MAO";
 
@@ -93,9 +84,6 @@ public class TwitterLoggin extends AppCompatActivity {
         setContentView(R.layout.activity_twitter_loggin);
         mAuth = FirebaseAuth.getInstance();
 
-        //extra on create
-
-
         message = findViewById(R.id.maoText);
         message.setText("Enter something to search on Twitter");
         profilePic2 = findViewById(R.id.twitterPic);
@@ -107,12 +95,8 @@ public class TwitterLoggin extends AppCompatActivity {
             }
         });
 
-        //end
-
         mTwitterBtn = findViewById(R.id.twitter_login_button);
         TviewEmail = findViewById(R.id.emailTxt);
-
-
 
         mTwitterBtn.setCallback(new Callback<TwitterSession>() {
             @Override
@@ -121,7 +105,6 @@ public class TwitterLoggin extends AppCompatActivity {
                 signInToFirebaseWithTwitterSession(result.data);
                 UpdateTwitterButton();
             }
-
             @Override
             public void failure(TwitterException exception) {
                 Toast.makeText(TwitterLoggin.this, "Login failed. No internet or No Twitter app found on your phone", Toast.LENGTH_LONG).show();
@@ -142,8 +125,6 @@ public class TwitterLoggin extends AppCompatActivity {
             }
         };
         UpdateTwitterButton();
-
-
     }
 
     @Override
@@ -158,11 +139,9 @@ public class TwitterLoggin extends AppCompatActivity {
                     // Get the path from the Uri
                     icoGallery.setImageURI(null);
                     icoGallery.setImageURI(selectedImageUri);
-
                 }
             }
         }
-
     }
 
     @Override
@@ -181,8 +160,6 @@ public class TwitterLoggin extends AppCompatActivity {
             TviewEmail.setText(user.getDisplayName());
             Picasso.get().load(user.getPhotoUrl().toString()).into(profilePic2);
         }
-
-
     }
 
     @Override
@@ -202,6 +179,8 @@ public class TwitterLoggin extends AppCompatActivity {
     private void signInToFirebaseWithTwitterSession(TwitterSession session){
         AuthCredential credential = TwitterAuthProvider.getCredential(session.getAuthToken().token,
                 session.getAuthToken().secret);
+        //POLY SHMANTIKO
+        //Klevw ta token,secret gia na ta exw pantoy
         token1 = session.getAuthToken().token;
         secret1 =  session.getAuthToken().secret;
 
@@ -217,28 +196,17 @@ public class TwitterLoggin extends AppCompatActivity {
                         }
                     }
                 });
-
-
     }
 
-    //extra methods
+    //signout of firebase gia dokimes
     public void signOutTwitter(View view) {
         FirebaseAuth.getInstance().signOut();
         mTwitterBtn.setVisibility(View.VISIBLE);
     }
 
-    public void onTrendsClick(View view){
-        goToTrends(token1,secret1);
-    }
-
+    //TODO: na to moddarw gia ta fleets
     public void shareTwitter(View view) {
-        //
         String mao = String.valueOf(message.getText());
-       // String tweetUrl = "https://twitter.com/intent/tweet?text="+mao+" &url="
-       //         + "https://www.facebook.com/SMNAggr-103223751666202";
-       // Uri uri = Uri.parse(tweetUrl);
-       // startActivity(new Intent(Intent.ACTION_VIEW, uri));
-
         icoGallery.invalidate();
         BitmapDrawable drawable = (BitmapDrawable) icoGallery.getDrawable();
         Bitmap imagebitmap = drawable.getBitmap();
@@ -246,20 +214,15 @@ public class TwitterLoggin extends AppCompatActivity {
 
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
-        intent.putExtra(
-                Intent.EXTRA_TEXT,
-                "Check this out, what do you think?"
-                        + System.getProperty("line.separator")
-                        + mao);
+        intent.putExtra(Intent.EXTRA_TEXT, "Check this out, what do you think?" + System.getProperty("line.separator") + mao);
 
         intent.setType("image/*");
-        intent.putExtra(Intent.EXTRA_STREAM,
-                getImageUri(TwitterLoggin.this, imagebitmap));
+        intent.putExtra(Intent.EXTRA_STREAM, getImageUri(TwitterLoggin.this, imagebitmap));
         intent.setPackage("com.twitter.android");
         startActivity(intent);
         //
     }
-    // Metatroph eikonase se binary
+    // Metatroph eikonas se Uri
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
@@ -276,24 +239,29 @@ public class TwitterLoggin extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
     }
 
-    private void goToTrends(String token1,String secret1){
+    //paei sta trends/search alla me ta token,secret toy twitter
+    public void onTrendsClick(View view){
         if (token1.equals("MAO")){
             Toast.makeText(TwitterLoggin.this, "You have not logged In, please login and try again", Toast.LENGTH_LONG).show();
         }
         else {
-            if (String.valueOf(message.getText()).equals("Enter something to search on Twitter")){
-                Toast.makeText(TwitterLoggin.this, "You have not typed something to search, please type something in the field and try again",Toast.LENGTH_LONG).show();
-            }
-            else {
-                Intent myIntent = new Intent(TwitterLoggin.this, TwitterTrends.class);
-                System.out.println(token1);
-                System.out.println(secret1);
-                myIntent.putExtra("token", token1); //Optional parameters
-                myIntent.putExtra("secret", secret1);
-                myIntent.putExtra("search", String.valueOf(message.getText()));
-                TwitterLoggin.this.startActivity(myIntent);
+            Intent myIntent = new Intent(TwitterLoggin.this, TwitterTrends.class);
+            myIntent.putExtra("token", token1);
+            myIntent.putExtra("secret", secret1);
+            TwitterLoggin.this.startActivity(myIntent);
+        }
+    }
 
-            }
+    //paei sto FacebookLoggin alla me ta token,secret toy twitter
+    public void goToFacebook(View view){
+        if (token1.equals("MAO")){
+            Toast.makeText(TwitterLoggin.this, "You have not logged In, please login and try again", Toast.LENGTH_LONG).show();
+        }
+        else {
+            Intent myIntent = new Intent(TwitterLoggin.this, FacebookLoggin.class);
+            myIntent.putExtra("token", token1);
+            myIntent.putExtra("secret", secret1);
+            TwitterLoggin.this.startActivity(myIntent);
         }
     }
 
