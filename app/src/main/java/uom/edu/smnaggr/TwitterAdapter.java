@@ -26,6 +26,10 @@ public class TwitterAdapter extends ArrayAdapter<TwitterEntry> {
     private final LayoutInflater inflater;
     private final int layoutResource;
 
+    //TODO: na allaksoyme tis theseis kai to megethos twn textview sto activity_tweet_adapter
+    // treksto mia fora sta
+    // trends, kai mia fora sto search gia na deis pws fainontai prwta
+
     public TwitterAdapter(@NonNull Context context, int resource, @NonNull List<TwitterEntry> objects) {
         super(context, resource, objects);
         dataset = objects;

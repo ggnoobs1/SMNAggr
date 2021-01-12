@@ -27,6 +27,8 @@ public class PostApi extends AppCompatActivity {
     private ListView listView;
     private NewsAdapter newsAdapter;
 
+    //TODO: ayto logika paei gia diagraphi, alla skeftomai enan tropo na to aksiopoihsoyme
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

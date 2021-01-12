@@ -46,6 +46,9 @@ public class TwitterTrends extends AppCompatActivity {
     //WOEID
     private int Athens = 946738,Thessaloniki =963291,Greece= 23424833,WW= 1;
 
+    //TODO: ena picker mallon opws
+    //to ekane me to fragment kai to menubar o xaikalis, gia na dialegei o xrhsths poio
+    //woeid thelei exw valei 4 woeid stis panw seires alla mporoyme na valoyme kai alla
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +84,8 @@ public class TwitterTrends extends AppCompatActivity {
     }
 
     public void getTrendsAsync(View view){
-        System.out.println("eftasa edw 999");
+        //TODO: edw san teleytaia parametro tha pairnei to woeid poy tha exei epileksei o xrhsths apo to picker
+        // anti gia to Thessaloniki poy exw valei xerata
         FetchTrends fetchTrendsTask = new FetchTrends(twitterAdapter,token1,secret1,Thessaloniki);
         fetchTrendsTask.execute();
     }

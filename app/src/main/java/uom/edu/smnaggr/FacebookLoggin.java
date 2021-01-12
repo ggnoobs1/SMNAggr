@@ -120,6 +120,7 @@ public class FacebookLoggin extends AppCompatActivity {
                 openImageChooser();
             }
         });
+        //TODO: diagraphi twn list view sto facebookLoggin kai veltiwsh toy graphikoy perivallontos kai twn koympiwn
 
         //listView2 = findViewById(R.id.newsList2);
         listView = findViewById(R.id.newsListFB);
