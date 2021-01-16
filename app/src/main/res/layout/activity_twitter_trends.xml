@@ -18,7 +18,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/searchTrending"
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_height="34dp"
             android:hint="Search for a hashtag" />
     </com.google.android.material.textfield.TextInputLayout>
 

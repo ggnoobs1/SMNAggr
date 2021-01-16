@@ -89,7 +89,6 @@ public class FacebookLoggin extends AppCompatActivity {
     private ImageView icoGalleryfb;
     private TextInputEditText input;
     private CheckBox insta, facebook, twitter;
-    private ListView listView,listView2;
     private NewsAdapter newsAdapter;
     private PostAdapter postAdapter;
     private String stored_post_id;
@@ -122,43 +121,10 @@ public class FacebookLoggin extends AppCompatActivity {
         });
         //TODO: diagraphi twn list view sto facebookLoggin kai veltiwsh toy graphikoy perivallontos kai twn koympiwn
 
-        //listView2 = findViewById(R.id.newsList2);
-        listView = findViewById(R.id.newsListFB);
+
         newsAdapter = new NewsAdapter(this, R.layout.activity_news_adapter, new ArrayList<FBEntry>());
         postAdapter = new PostAdapter(this, R.layout.activity_post_adapter, new ArrayList<PostEntry>());
-        listView.setAdapter(newsAdapter);
-        //listView2.setAdapter(postAdapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent,
-                                    View view,
-                                    int position,
-                                    long id) {
-
-                FBEntry newsEntry = newsAdapter.getNewsEntry(position);
-                String url = newsEntry.getUrl();
-
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-            }
-        });
-/*
-        listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent,
-                                    View view,
-                                    int position,
-                                    long id) {
-
-                PostEntry postsEntry = postAdapter.getPostEntry(position);
-               // String url = postsEntry.getUrl();
-
-              //  startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-            }
-        });
-
-
- */
         insta = findViewById(R.id.checkbox_instagram);
         twitter = findViewById(R.id.checkbox_twitter);
         facebook = findViewById(R.id.checkbox_facebook);
@@ -177,13 +143,11 @@ public class FacebookLoggin extends AppCompatActivity {
                 Log.d(TAG, "onSuccess" + loginResult);
                 Toast.makeText(FacebookLoggin.this, "Signed in to facebook successful", Toast.LENGTH_LONG).show();
                 handleFacebookToken(loginResult.getAccessToken());
-
             }
 
             @Override
             public void onCancel() {
                 Log.d(TAG, "onCancel");
-
             }
 
             @Override
@@ -230,8 +194,6 @@ public class FacebookLoggin extends AppCompatActivity {
                 if (!task.isSuccessful()){
                     Toast.makeText(FacebookLoggin.this, "Firebase Auth failed", Toast.LENGTH_LONG).show();
                 }
-
-
             }
         });
 
@@ -446,7 +408,6 @@ public class FacebookLoggin extends AppCompatActivity {
                     }
                 }
         ).executeAsync();
-
     }
 
     public void postImageUrl(View view){
@@ -456,10 +417,10 @@ public class FacebookLoggin extends AppCompatActivity {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         imagebitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         byte[] byteArray = bytes.toByteArray();
-        String Messegario= String.valueOf(input);
+        String Messegario= String.valueOf(input.getText());
 
 
-        AccessToken newToken = new AccessToken(string_page_token,
+        AccessToken fbToken = new AccessToken(string_page_token,
                 String.valueOf(R.string.facebook_app_id),
                 String.valueOf(R.string.user_id),
                 null,
@@ -468,13 +429,10 @@ public class FacebookLoggin extends AppCompatActivity {
                 null,null,null,null);
         Bundle params = new Bundle();
         params.putString("message", Messegario);
-       // params.putString("url", "https://image.shutterstock.com/image-photo/white-transparent-leaf-on-mirror-260nw-1029171697.jpg");
         params.putByteArray("multipart/form-data",byteArray);
-       // params.putString("message", "This_xD_message");
-       // params.putString("message","test_image_with_text");
         /* make the API call */
         new GraphRequest(
-                newToken,
+                fbToken,
                 "/103223751666202/photos",
                 params,
                 HttpMethod.POST,
@@ -484,6 +442,21 @@ public class FacebookLoggin extends AppCompatActivity {
                     }
                 }
         ).executeAsync();
+        /*Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, "Check this out, what do you think?" + System.getProperty("line.separator") );
+
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_STREAM, getImageUri(FacebookLoggin.this, imagebitmap));
+        intent.setPackage("com.twitter.android");
+        startActivity(intent);
+        */
+
+        //gia na xeris oti postares tin fotografia kai kani aftomato refresh
+        Toast.makeText(FacebookLoggin.this, "image posted successfully ", Toast.LENGTH_LONG).show();
+
+        finish();
+        startActivity(getIntent());
     }
 
     public void postTwitter(View view){

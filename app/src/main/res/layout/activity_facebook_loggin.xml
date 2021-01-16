@@ -1,65 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".FacebookLoggin">
 
+
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"
-        android:layout_width="198dp"
-        android:layout_height="22dp"
+        android:layout_width="196dp"
+        android:layout_height="48dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/profileView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ListView
-        android:id="@+id/newsListFB"
-        android:layout_width="408dp"
-        android:layout_height="102dp"
-        android:layout_marginTop="400dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/profileView"
+        app:layout_constraintEnd_toStartOf="@+id/profileView"
+        app:layout_constraintHorizontal_bias="0.354"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <ImageView
         android:id="@+id/profileView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_above="@+id/login_button"
         android:layout_alignStart="@+id/login_button"
         android:layout_alignEnd="@+id/login_button"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="16dp"
+        android:contentDescription="TODO"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.938"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/com_facebook_profile_picture_blank_square"
-        tools:srcCompat="@tools:sample/avatars"
-        android:contentDescription="TODO" />
-
-    <Button
-        android:id="@+id/shareButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:onClick="onShareResult"
-        android:text="share something"
-        app:layout_constraintBottom_toTopOf="@+id/login_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        tools:srcCompat="@tools:sample/avatars" />
 
     <ImageView
         android:id="@+id/icoGalleryfb"
-        android:layout_width="126dp"
-        android:layout_height="94dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/shareButton"
+        android:layout_width="279dp"
+        android:layout_height="157dp"
+        android:layout_marginTop="172dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -67,91 +48,103 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/inputLayout"
-        android:layout_width="319dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="15dp"
+        android:layout_width="278dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/icoGalleryfb"
         app:layout_constraintTop_toBottomOf="@+id/icoGalleryfb">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputText"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="49dp"
             android:hint="Add some text to share" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <CheckBox
-        android:id="@+id/checkbox_instagram"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:text="Instagram"
-        app:layout_constraintBottom_toTopOf="@+id/icoGalleryfb"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="100dp"
+        android:layout_height="69dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="56dp"
+        android:onClick="goToPostEntry"
+        android:text="Post Entry"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkbox_twitter" />
 
     <CheckBox
         android:id="@+id/checkbox_facebook"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_width="108dp"
+        android:layout_height="30dp"
         android:text="Facebook"
-        app:layout_constraintBottom_toTopOf="@+id/checkbox_instagram"
+        app:layout_constraintBaseline_toBaselineOf="@+id/checkbox_twitter"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <CheckBox
-        android:id="@+id/checkbox_twitter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:text="Twitter"
-        app:layout_constraintBottom_toTopOf="@+id/checkbox_facebook"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toEndOf="@+id/checkbox_twitter" />
 
     <Button
-        android:id="@+id/button5"
-        android:layout_width="105dp"
-        android:layout_height="76dp"
+        android:id="@+id/ShareSmth"
+        android:layout_width="190dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="40dp"
         android:onClick="postImageUrl"
-        android:text="XD button"
+        android:text="Share Something"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button6"
-        android:layout_width="107dp"
-        android:layout_height="70dp"
-        android:onClick="goToPostEntry"
-        android:text="Post Entry"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/inputLayout" />
 
     <Button
         android:id="@+id/postSDK"
-        android:layout_width="90dp"
-        android:layout_height="64dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:text="SDK post"
+        android:layout_width="100dp"
+        android:layout_height="69dp"
+        android:layout_marginStart="144dp"
+        android:layout_marginTop="592dp"
         android:onClick="postSDK"
-        app:layout_constraintEnd_toStartOf="@+id/button6"
-        app:layout_constraintStart_toEndOf="@+id/button5"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="SDK post"
+        app:layout_constraintBottom_toBottomOf="@+id/button6"
+        app:layout_constraintStart_toEndOf="@+id/button6"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <CheckBox
+        android:id="@+id/checkbox_instagram"
+        android:layout_width="108dp"
+        android:layout_height="33dp"
+        android:text="Instagram"
+        app:layout_constraintBaseline_toBaselineOf="@+id/checkbox_facebook"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.112"
+        app:layout_constraintStart_toEndOf="@+id/checkbox_facebook" />
+
+    <CheckBox
+        android:id="@+id/checkbox_twitter"
+        android:layout_width="92dp"
+        android:layout_height="35dp"
+        android:text="Twitter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.141"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.754" />
 
     <Button
         android:id="@+id/postApiTwitter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="5dp"
-        android:text="Post Twitter"
+        android:layout_marginEnd="32dp"
         android:onClick="postTwitter"
+        android:text="Post Twitter"
+        app:layout_constraintBaseline_toBaselineOf="@+id/ShareSmth"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button6" />
+        app:layout_constraintHorizontal_bias="0.903"
+        app:layout_constraintStart_toEndOf="@+id/ShareSmth" />
+
+
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

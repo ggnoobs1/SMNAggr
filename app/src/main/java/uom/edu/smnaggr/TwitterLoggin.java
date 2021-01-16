@@ -59,6 +59,7 @@ public class TwitterLoggin extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private TwitterLoginButton mTwitterBtn;
     private TextView TviewEmail;
+    private Button goToFbButton;
 
     private ImageView profilePic2;
     private TextInputEditText message;
@@ -124,6 +125,8 @@ public class TwitterLoggin extends AppCompatActivity {
                 }
             }
         };
+
+
         UpdateTwitterButton();
     }
 
@@ -259,8 +262,8 @@ public class TwitterLoggin extends AppCompatActivity {
         }
         else {
             Intent myIntent = new Intent(TwitterLoggin.this, FacebookLoggin.class);
-            myIntent.putExtra("token", token1);
-            myIntent.putExtra("secret", secret1);
+                myIntent.putExtra("token", token1);
+                myIntent.putExtra("secret", secret1);
             TwitterLoggin.this.startActivity(myIntent);
         }
     }
