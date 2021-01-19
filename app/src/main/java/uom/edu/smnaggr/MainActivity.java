@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
 
         if(
                 ContextCompat.checkSelfPermission(this.getApplicationContext(),permissions[0])== getPackageManager().PERMISSION_GRANTED &&
-                        ContextCompat.checkSelfPermission(this.getApplicationContext(),permissions[1])== getPackageManager().PERMISSION_GRANTED &&
-                        ContextCompat.checkSelfPermission(this.getApplicationContext(),permissions[2])== getPackageManager().PERMISSION_GRANTED
+                ContextCompat.checkSelfPermission(this.getApplicationContext(),permissions[1])== getPackageManager().PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this.getApplicationContext(),permissions[2])== getPackageManager().PERMISSION_GRANTED
         ){
         }
         else{

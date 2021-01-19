@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -211,10 +213,8 @@ public class FacebookLoggin extends AppCompatActivity {
 
                 if (null != selectedImageUri) {
                     // Get the path from the Uri
-
                     icoGalleryfb.setImageURI(null);
                     icoGalleryfb.setImageURI(selectedImageUri);
-
                 }
             }
         }
@@ -241,7 +241,6 @@ public class FacebookLoggin extends AppCompatActivity {
         if (currentUser != null) {
             UpdateUI2(currentUser);
         }
-
         mAuth.addAuthStateListener(authListener);
     }
 
@@ -254,14 +253,14 @@ public class FacebookLoggin extends AppCompatActivity {
     }
 
 
+
     @SuppressLint("NewApi")
     public void onShareResult(View view){
         //pairnw to keimeno apo to textfield
         String mao = String.valueOf(input.getText());
         //ftiaxnw thn eikona bitmap
         icoGalleryfb.invalidate();
-        BitmapDrawable drawable = (BitmapDrawable) icoGalleryfb.getDrawable();
-        Bitmap imagebitmap = drawable.getBitmap();
+        drawable();
 
         callbackManager = CallbackManager.Factory.create();
         final ShareDialog shareDialog = new ShareDialog(this);
@@ -287,7 +286,7 @@ public class FacebookLoggin extends AppCompatActivity {
             ShareHashtag shareHashTag = new ShareHashtag.Builder().setHashtag(mao).build();
             //ftiaxnw thn fwto se sharable content
             SharePhoto photo = new SharePhoto.Builder()
-                    .setBitmap(imagebitmap)
+                    .setBitmap(drawable())
                     .build();
             SharePhotoContent PhotoContent = new SharePhotoContent.Builder()
                     .setShareHashtag(shareHashTag)
@@ -312,7 +311,7 @@ public class FacebookLoggin extends AppCompatActivity {
 
                 intent.setType("image/*");
                 intent.putExtra(Intent.EXTRA_STREAM,
-                        getImageUri(FacebookLoggin.this, imagebitmap));
+                        getImageUri(FacebookLoggin.this, drawable()));
                 intent.setPackage("com.twitter.android");
                 startActivity(intent);
             }
@@ -324,8 +323,7 @@ public class FacebookLoggin extends AppCompatActivity {
     private void createInstagramIntent(String type){
 
 
-        BitmapDrawable drawable = (BitmapDrawable) icoGalleryfb.getDrawable();
-        Bitmap imagebitmap = drawable.getBitmap();
+        drawable();
         // Create the new Intent using the 'Send' action.
         Intent share = new Intent(Intent.ACTION_SEND);
 
@@ -333,12 +331,10 @@ public class FacebookLoggin extends AppCompatActivity {
         share.setType(type);
 
         // Add the URI to the Intent.
-        share.putExtra(Intent.EXTRA_STREAM, getImageUri(FacebookLoggin.this, imagebitmap));
+        share.putExtra(Intent.EXTRA_STREAM, getImageUri(FacebookLoggin.this, drawable()));
         share.setPackage("com.instagram.android");
         // Broadcast the Intent.
         startActivity(Intent.createChooser(share, "Share to"));
-       // share.setPackage("com.facebook.katana");
-       // com.instagram.android
     }
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
@@ -387,7 +383,10 @@ public class FacebookLoggin extends AppCompatActivity {
                 null,
                 null,
                 null,
-                null,null,null,null);
+                null,
+                null,
+                null,
+                null);
 
         Bundle params = new Bundle();
         params.putString("message", "This_xD_message");
@@ -411,74 +410,84 @@ public class FacebookLoggin extends AppCompatActivity {
     }
 
     public void postImageUrl(View view){
+        drawable();
+        if(drawable()!=null) {
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            drawable().compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+            byte[] byteArray = bytes.toByteArray();
+            String Messegario = String.valueOf(input.getText());
 
-        BitmapDrawable drawable = (BitmapDrawable) icoGalleryfb.getDrawable();
-        Bitmap imagebitmap = drawable.getBitmap();
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        imagebitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        byte[] byteArray = bytes.toByteArray();
-        String Messegario= String.valueOf(input.getText());
-
-
-        AccessToken fbToken = new AccessToken(string_page_token,
-                String.valueOf(R.string.facebook_app_id),
-                String.valueOf(R.string.user_id),
-                null,
-                null,
-                null,
-                null,null,null,null);
-        Bundle params = new Bundle();
-        params.putString("message", Messegario);
-        params.putByteArray("multipart/form-data",byteArray);
-        /* make the API call */
-        new GraphRequest(
-                fbToken,
-                "/103223751666202/photos",
-                params,
-                HttpMethod.POST,
-                new GraphRequest.Callback() {
-                    public void onCompleted(GraphResponse response) {
-                        /* handle the result */
+            AccessToken fbToken = new AccessToken(string_page_token,
+                    String.valueOf(R.string.facebook_app_id),
+                    String.valueOf(R.string.user_id),
+                    null,
+                    null,
+                    null,
+                    null, null, null, null);
+            Bundle params = new Bundle();
+            params.putString("message", Messegario);
+            params.putByteArray("multipart/form-data", byteArray);
+            /* make the API call */
+            new GraphRequest(
+                    fbToken,
+                    "/103223751666202/photos",
+                    params,
+                    HttpMethod.POST,
+                    new GraphRequest.Callback() {
+                        public void onCompleted(GraphResponse response) {
+                            /* handle the result */
+                        }
                     }
-                }
-        ).executeAsync();
-        /*Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_TEXT, "Check this out, what do you think?" + System.getProperty("line.separator") );
-
-        intent.setType("image/*");
-        intent.putExtra(Intent.EXTRA_STREAM, getImageUri(FacebookLoggin.this, imagebitmap));
-        intent.setPackage("com.twitter.android");
-        startActivity(intent);
-        */
+            ).executeAsync();
+        }
+        else{
+            Toast.makeText(this, "Input image",Toast.LENGTH_LONG).show();
+        }
 
         //gia na xeris oti postares tin fotografia kai kani aftomato refresh
-        Toast.makeText(FacebookLoggin.this, "image posted successfully ", Toast.LENGTH_LONG).show();
-
+        Toast.makeText(FacebookLoggin.this, "image posted successfully ", Toast.LENGTH_SHORT).show();
         finish();
         startActivity(getIntent());
+
     }
+
 
     public void postTwitter(View view){
         String postText = String.valueOf(input.getText());
 
-        BitmapDrawable drawable = (BitmapDrawable) icoGalleryfb.getDrawable();
-        Bitmap imagebitmap = drawable.getBitmap();
+        drawable();
+        if(token1!= null){
 
-        if (postText==null){
-            Toast.makeText(FacebookLoggin.this, "You have not entered text to post, please type something and try again", Toast.LENGTH_LONG).show();
-        }
-        else {
-            if (token1=="mao"){
-                Toast.makeText(FacebookLoggin.this, "You have not logged in with Twitter, please login and try again", Toast.LENGTH_LONG).show();
+            if (postText==null){
+                Toast.makeText(FacebookLoggin.this, "You have not entered text to post, please type something and try again", Toast.LENGTH_LONG).show();
             }
             else {
-                PostTwitterAsync postTask = new PostTwitterAsync(token1, secret1, confirmationText, postText,imagebitmap);
-                postTask.execute();
+                if (token1=="mao"){
+                    Toast.makeText(FacebookLoggin.this, "You have not logged in with Twitter, please login and try again", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    PostTwitterAsync postTask = new PostTwitterAsync(token1, secret1, confirmationText, postText,drawable());
+                    postTask.execute();
+
+                }
             }
         }
 
+    }
 
+    public void SomeFunc(View view){
+        postTwitter(view);
+        postImageUrl(view);
+    }
+
+    public Bitmap drawable (){
+        BitmapDrawable drawable = (BitmapDrawable) icoGalleryfb.getDrawable();
+        Bitmap imagebitmap = drawable.getBitmap();
+        if(drawable == null || imagebitmap == null ){
+            Toast.makeText(this, "VALE IKONA RE BRO",Toast.LENGTH_LONG).show();
+            return null;
+        }
+        return imagebitmap;
     }
 
 

@@ -78,7 +78,7 @@
         android:id="@+id/checkbox_facebook"
         android:layout_width="108dp"
         android:layout_height="30dp"
-        android:text="Facebook"
+        android:text="@string/Facebook"
         app:layout_constraintBaseline_toBaselineOf="@+id/checkbox_twitter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.05"
@@ -88,10 +88,10 @@
         android:id="@+id/ShareSmth"
         android:layout_width="190dp"
         android:layout_height="49dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="40dp"
-        android:onClick="postImageUrl"
-        android:text="Share Something"
+        android:layout_marginTop="36dp"
+        android:onClick="SomeFunc"
+        android:text="@string/ShareSomething"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputLayout" />
 
@@ -112,7 +112,7 @@
         android:id="@+id/checkbox_instagram"
         android:layout_width="108dp"
         android:layout_height="33dp"
-        android:text="Instagram"
+        android:text="@string/Instagram"
         app:layout_constraintBaseline_toBaselineOf="@+id/checkbox_facebook"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.112"
@@ -122,29 +122,13 @@
         android:id="@+id/checkbox_twitter"
         android:layout_width="92dp"
         android:layout_height="35dp"
-        android:text="Twitter"
+        android:text="@string/Twitter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.141"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.754" />
-
-    <Button
-        android:id="@+id/postApiTwitter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:onClick="postTwitter"
-        android:text="Post Twitter"
-        app:layout_constraintBaseline_toBaselineOf="@+id/ShareSmth"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.903"
-        app:layout_constraintStart_toEndOf="@+id/ShareSmth" />
-
-
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

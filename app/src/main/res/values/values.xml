@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="FacebookLogin">Go To Facebook Login</string>
+    <string name="ShareSomething">Share Something</string>
+    <string name="Twitter">Twitter</string>
+    <string name="Facebook">Facebook</string>
+    <string name="Instagram">Instagram</string>
+
+
 
 </resources>

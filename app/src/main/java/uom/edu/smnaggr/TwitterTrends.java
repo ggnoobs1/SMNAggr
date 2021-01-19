@@ -36,7 +36,7 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
-
+//put extra kai na ta stelnoume sto text tou fb login
 public class TwitterTrends extends AppCompatActivity {
 
     private TwitterAdapter twitterAdapter;
