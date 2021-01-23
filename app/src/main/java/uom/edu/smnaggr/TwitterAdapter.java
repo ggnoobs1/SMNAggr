@@ -87,10 +87,29 @@ public class TwitterAdapter extends ArrayAdapter<TwitterEntry> {
         }
 
         TwitterEntry twEntry = dataset.get(position);
-        holder.nameTextView.setText(twEntry.getName());
+        //kanoniko
+        /*holder.nameTextView.setText(twEntry.getName());
         holder.urlTextView.setText(twEntry.getUrl());
+        holder.nameTextView.setText(twEntry.getName());
         holder.queryTextView.setText(twEntry.getQuery());
-        holder.tweet_volumeTextView.setText(twEntry.getTweet_volume());
+        holder.tweet_volumeTextView.setText(twEntry.getTweet_volume());*/
+
+        //Montreal den xekinai me % alla me arithmous opote prepi na vroume ena tropo gia na akironoume tous arithmous
+        if(twEntry.getQuery().startsWith("%")){
+            holder.urlTextView.setText(" ");
+            holder.tweet_volumeTextView.setText(" ");
+            holder.queryTextView.setText(twEntry.getName());
+            holder.nameTextView.setText(" ");
+
+        }
+        else {
+            holder.queryTextView.setText(twEntry.getQuery());
+            holder.urlTextView.setText(twEntry.getUrl());
+            holder.nameTextView.setText(twEntry.getName());
+            holder.queryTextView.setText(twEntry.getQuery());
+            holder.tweet_volumeTextView.setText(twEntry.getTweet_volume());
+
+        }
 
 
         return convertView;

@@ -7,4 +7,6 @@
     <string name="page_access_token" translatable="false">EAADNOPeW1AUBANFZBU4APKJ5sZBeChYQrM2bXgr2kScdCvONMf6DZA0KAmLQNLwFUuuDMI3Rfx8EbfAK6sxSplD0XWhjPOvplp0WxEgFZC5bxaCxEZA1OA7jFRmFB52xcdyodQLy8D6SZCS1xZCjmaw4mZBhUILKHoZAmizfh2lRKCgxTIHSFmRR9</string>
     <string name="page_id">103223751666202</string>
     <string name="user_id">152620139971720</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

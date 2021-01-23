@@ -27,7 +27,7 @@
         android:layout_marginEnd="100dp"
         android:layout_marginBottom="100dp"
         android:onClick="goToTwitterActivity"
-        android:text="Go to Twitter Login" />
+        android:text="@string/GotoTwitterLogin" />
 
     <Button
         android:id="@+id/button3"

@@ -1,11 +1,13 @@
 package uom.edu.smnaggr;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -13,28 +15,7 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
-
-import twitter4j.Location;
-import twitter4j.Query;
-import twitter4j.QueryResult;
-import twitter4j.ResponseList;
-import twitter4j.Status;
-import twitter4j.Trends;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.conf.ConfigurationBuilder;
 
 //put extra kai na ta stelnoume sto text tou fb login
 public class TwitterTrends extends AppCompatActivity {
@@ -44,11 +25,9 @@ public class TwitterTrends extends AppCompatActivity {
     private ListView listViewTrends;
     private String token1,secret1,search1,jsonString;
     //WOEID
-    private int Athens = 946738,Thessaloniki =963291,Greece= 23424833,WW= 1;
+    private int Athens = 946738,Thessaloniki =963291,Greece= 23424833,WW= 1 , Ottawa=3369, Montreal= 3534;
 
-    //TODO: ena picker mallon opws
-    //to ekane me to fragment kai to menubar o xaikalis, gia na dialegei o xrhsths poio
-    //woeid thelei exw valei 4 woeid stis panw seires alla mporoyme na valoyme kai alla
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,14 +62,47 @@ public class TwitterTrends extends AppCompatActivity {
         }
     }
 
-    public void getTrendsAsync(View view){
-        //TODO: edw san teleytaia parametro tha pairnei to woeid poy tha exei epileksei o xrhsths apo to picker
-        // anti gia to Thessaloniki poy exw valei xerata
-        FetchTrends fetchTrendsTask = new FetchTrends(twitterAdapter,token1,secret1,Thessaloniki);
-        fetchTrendsTask.execute();
+    public View view;
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.Greece:
+                getTrendsAsync(view,Greece);
+                return true;
+            case R.id.Athens:
+                getTrendsAsync(view,Athens);
+                return true;
+            case R.id.Thessaloniki:
+                getTrendsAsync(view,Thessaloniki);
+                return true;
+            case R.id.Ottawa:
+                getTrendsAsync(view,Ottawa);
+                return true;
+            case R.id.Montreal:
+                getTrendsAsync(view,Montreal);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    private int getCity(int aCity) {
+        return aCity;
     }
 
 
+    //to view pos to dioxnoume ?
+    public void getTrendsAsync(View view, int city ){
+        FetchTrends fetchTrendsTask = new FetchTrends(twitterAdapter,token1,secret1,getCity(city));
+        fetchTrendsTask.execute();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu,menu);
+        return true;
+    }
 
 
 

@@ -121,7 +121,7 @@ public class FacebookLoggin extends AppCompatActivity {
                 openImageChooser();
             }
         });
-        //TODO: diagraphi twn list view sto facebookLoggin kai veltiwsh toy graphikoy perivallontos kai twn koympiwn
+
 
 
         newsAdapter = new NewsAdapter(this, R.layout.activity_news_adapter, new ArrayList<FBEntry>());
@@ -476,8 +476,18 @@ public class FacebookLoggin extends AppCompatActivity {
     }
 
     public void SomeFunc(View view){
-        postTwitter(view);
-        postImageUrl(view);
+
+        if(twitter.isChecked()){
+            postTwitter(view);
+        }
+
+        if(facebook.isChecked()){
+            postImageUrl(view);
+        }
+
+        if(insta.isChecked()){
+            //postInsta
+        }
     }
 
     public Bitmap drawable (){

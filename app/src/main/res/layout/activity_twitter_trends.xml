@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".TwitterTrends">
 
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
-        android:layout_width="228dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="5dp"
+        android:layout_width="232dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="68dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/FetchAuth">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/searchTrending"
             android:layout_width="match_parent"
-            android:layout_height="34dp"
-            android:hint="Search for a hashtag" />
+            android:layout_height="49dp"
+            android:hint="@string/searchForHashtag" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <ListView
@@ -34,25 +36,18 @@
         app:layout_constraintTop_toBottomOf="@+id/FetchTweets"
         app:layout_constraintVertical_bias="0.0" />
 
+
     <Button
         android:id="@+id/FetchTweets"
         android:layout_width="121dp"
         android:layout_height="60dp"
         android:layout_marginTop="68dp"
         android:onClick="goToFetch"
-        android:text="Search"
+        android:text="@string/Search"
+        app:layout_constraintBottom_toBottomOf="@+id/textInputLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textInputLayout"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/FetchAuth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:onClick="getTrendsAsync"
-        android:text="Fetch Trends"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
+
