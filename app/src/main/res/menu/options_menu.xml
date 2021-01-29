@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/Greece"
+        android:title="@string/Greece" />
+    <item
+        android:id="@+id/Athens"
+        android:title="@string/Athens" />
+    <item
+        android:id="@+id/Thessaloniki"
+        android:title="@string/Thessaloniki" />
+    <item
+        android:id="@+id/Ottawa"
+        android:title="@string/Ottawa" />
+    <item
+        android:id="@+id/Montreal"
+        android:title="@string/Montreal" />
+</menu>
