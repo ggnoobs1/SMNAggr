@@ -91,7 +91,6 @@ public class TwitterTrends extends AppCompatActivity {
     }
 
 
-    //to view pos to dioxnoume ?
     public void getTrendsAsync(View view, int city ){
         FetchTrends fetchTrendsTask = new FetchTrends(twitterAdapter,token1,secret1,getCity(city));
         fetchTrendsTask.execute();

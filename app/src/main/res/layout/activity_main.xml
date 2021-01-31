@@ -10,35 +10,52 @@
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/button2"
+        android:layout_height="60dp"
+        android:layout_below="@+id/button2"
+        android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="100dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginStart="107dp"
+        android:layout_marginTop="193dp"
+        android:layout_marginEnd="128dp"
         android:onClick="goToFBActivity"
         android:text="@string/FacebookLogin" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="63dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="100dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginStart="108dp"
+        android:layout_marginTop="245dp"
+        android:layout_marginEnd="132dp"
         android:onClick="goToTwitterActivity"
         android:text="@string/GotoTwitterLogin" />
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/button1"
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="110dp"
+        android:layout_height="102dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="100dp"
-        android:layout_marginBottom="150dp"
-        android:onClick="goToPost"
-        android:text="PostApi" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="140dp"
+        android:layout_marginEnd="161dp"
+        android:layout_marginBottom="520dp"
+        app:srcCompat="@drawable/tw__composer_logo_blue" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="108dp"
+        android:layout_height="101dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="140dp"
+        android:layout_marginEnd="161dp"
+        android:layout_marginBottom="271dp"
+        app:srcCompat="@drawable/com_facebook_favicon_blue" />
 
 
 </RelativeLayout>

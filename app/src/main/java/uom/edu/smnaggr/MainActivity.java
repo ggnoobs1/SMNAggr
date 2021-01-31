@@ -14,20 +14,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
-
-    //TODO: veltiwsh toy UI kai allagh twn contraints sta koympia sto MainActrivity
-
-
-    //TODO: shmantiko na valoyme mesa sto arxeio values ta strings poy xrhsimopoioyme
-    // paradeigma sto activity_main.xml ekei poy eixe
-    // android:text="Go To Facebook Login"
-    // exw valei
-    // android:text="@string/FacebookLogin" />
-    // kai sto values.xml exw ftiaksei ayto gia na pairnei to string apo ekei
-    // <string name="FacebookLogin">Go To Facebook Login</string>
-    // prosoxh mhn valeis string poy yparxei hdh me aythn thn onomasia
-    // kai prosoxh mhn valeis lathos @string/ 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
         if(
-                ContextCompat.checkSelfPermission(this.getApplicationContext(),permissions[0])== getPackageManager().PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this.getApplicationContext(),permissions[0]) == getPackageManager().PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this.getApplicationContext(),permissions[1])== getPackageManager().PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this.getApplicationContext(),permissions[2])== getPackageManager().PERMISSION_GRANTED
         ){

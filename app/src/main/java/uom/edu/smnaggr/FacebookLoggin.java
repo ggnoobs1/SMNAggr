@@ -486,8 +486,10 @@ public class FacebookLoggin extends AppCompatActivity {
         }
 
         if(insta.isChecked()){
-            //postInsta
+            createInstagramIntent("image/jpeg" );
         }
+
+
     }
 
     public Bitmap drawable (){

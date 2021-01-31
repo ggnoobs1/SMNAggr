@@ -48,10 +48,13 @@ public class FetchTrends extends AsyncTask<String, Void, List<TwitterEntry>> {
         List<TwitterEntry> trendsList = new ArrayList<>();
         for (twitter4j.Trend tr : trends.getTrends()){
             TwitterEntry entry = new TwitterEntry();
-            entry.setName(tr.getName());
-            entry.setQuery(tr.getQuery());
-            entry.setUrl(tr.getURL());
-            entry.setTweet_volume(String.valueOf(tr.getTweetVolume()));
+
+
+            entry.setName("");
+            entry.setQuery(tr.getName());
+            entry.setUrl("");
+
+
             trendsList.add(entry);
         }
         return trendsList;
